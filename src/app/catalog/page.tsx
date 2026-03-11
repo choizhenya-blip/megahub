@@ -74,6 +74,14 @@ function formatPrice(p: number | null | undefined) {
   return `₸ ${Number(p).toLocaleString("ru-KZ")}`;
 }
 
+// ── Stock label (hides exact count) ──────────────────────────
+function getStockLabel(stock: number, m: ReturnType<typeof useI18n>["m"]): string {
+  if (stock < 10)  return `${m.book.inStockPrefix} ${m.book.stockLessThan10}`;
+  if (stock < 30)  return `${m.book.inStockPrefix} ${m.book.stockMoreThan10}`;
+  if (stock < 50)  return `${m.book.inStockPrefix} ${m.book.stockMoreThan30}`;
+  return `${m.book.inStockPrefix} ${m.book.stockMoreThan50}`;
+}
+
 // ── Quantity Controller ──────────────────────────────────────
 function QtyControl({
   qty,
@@ -444,7 +452,7 @@ function CatalogInner() {
                           <span className="text-xs" style={{ fontFamily: "system-ui,sans-serif", color: outOfStock ? "#DC2626" : "#16A34A" }}>
                             {outOfStock
                               ? m.book.outOfStock
-                              : `${m.book.inStockPrefix} ${b.stock_count} ${m.book.inStockSuffix}`}
+                              : getStockLabel(b.stock_count ?? 0, m)}
                           </span>
                         </div>
 
