@@ -95,21 +95,21 @@ function QtyControl({
   const atLimit = qty >= effectiveMax;
   const atStockLimit = atLimit && stock < MAX_QTY;
   return (
-    <div>
+    <div className="inline-flex flex-col items-end shrink-0">
       <div
         className="flex items-center rounded-lg overflow-hidden"
         style={{ border: "1px solid #E5E7EB" }}
       >
         <button
           onClick={() => setQty(bookId, qty - 1)}
-          className="flex items-center justify-center w-8 h-8"
+          className="flex items-center justify-center w-8 h-8 shrink-0"
           style={{ background: "none", border: "none", cursor: "pointer", color: "#374151" }}
           aria-label="−"
         >
           <Minus size={12} />
         </button>
         <span
-          className="w-8 text-center text-xs font-bold"
+          className="w-8 shrink-0 text-center text-xs font-bold"
           style={{
             fontFamily: "system-ui,sans-serif",
             color: "#111827",
@@ -123,7 +123,7 @@ function QtyControl({
         <button
           onClick={() => setQty(bookId, qty + 1)}
           disabled={atLimit}
-          className="flex items-center justify-center w-8 h-8"
+          className="flex items-center justify-center w-8 h-8 shrink-0"
           style={{
             background: "none",
             border: "none",
@@ -137,7 +137,7 @@ function QtyControl({
         </button>
       </div>
       {atLimit && (
-        <p style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.65rem", color: "#F97316", marginTop: 2 }}>
+        <p style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.65rem", color: "#F97316", marginTop: 2, textAlign: "right", maxWidth: "7rem", lineHeight: 1.2 }}>
           {atStockLimit
             ? `${stockLimitReached} ${stock} ${inStockSuffix}`
             : maxQtyNote}
