@@ -11,6 +11,7 @@
     "webhook:register": "node scripts/register-trello-webhook.mjs"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.9.0",
     "@supabase/supabase-js": "^2.99.1",
     "@types/nodemailer": "^7.0.11",
     "lucide-react": "^0.577.0",
