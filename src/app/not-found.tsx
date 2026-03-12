@@ -7,7 +7,7 @@ export default function NotFound() {
   const { m } = useI18n();
 
   return (
-    <div className="min-h-[70vh] flex flex-col items-center justify-center px-4 text-center">
+    <div className="min-h-[70vh] flex flex-col items-center justify-center px-4 text-center bg-white">
       <p className="text-8xl font-extrabold text-blue-600 mb-4 select-none">404</p>
       <h1 className="text-2xl font-bold text-gray-900 mb-3">
         {m.notFound.title}

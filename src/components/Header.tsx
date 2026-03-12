@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import {
-  BookOpen,
   ShoppingCart,
   Menu,
   X,
@@ -171,37 +170,15 @@ export function Header() {
             {/* ─── Logo ─── */}
             <a
               href="/"
-              className="flex items-center gap-2.5 select-none flex-shrink-0"
+              className="flex items-center select-none flex-shrink-0"
               style={{ textDecoration: "none" }}
             >
-              <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: "#1D4ED8" }}
-              >
-                <BookOpen size={20} color="white" strokeWidth={2.5} />
-              </div>
-              <span
-                style={{
-                  fontFamily: "'Georgia',serif",
-                  fontWeight: 700,
-                  fontSize: "1rem",
-                  color: "#1D4ED8",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {m.brand.megaHub}
-              </span>
-              <span
-                className="hidden sm:inline"
-                style={{
-                  fontFamily: "'Georgia',serif",
-                  fontSize: "1rem",
-                  color: "#374151",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {m.brand.education}
-              </span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.svg"
+                alt="MegaHub Education"
+                style={{ height: 44, width: "auto" }}
+              />
             </a>
 
             {/* ─── Desktop Nav ─── */}

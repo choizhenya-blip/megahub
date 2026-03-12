@@ -523,13 +523,13 @@ function MegaHubLandingInner() {
       <footer style={{ background: "#111827" }} className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#1D4ED8" }}>
-                <BookOpen size={16} color="white"/>
-              </div>
-              <span style={{ fontFamily: "'Georgia',serif", color: "white", fontWeight: 600 }}>
-                {m.brand.megaHub} {m.brand.education}
-              </span>
+            <div className="flex items-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.svg"
+                alt="MegaHub Education"
+                style={{ height: 36, width: "auto", filter: "brightness(0) invert(1)" }}
+              />
             </div>
             <p style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.8125rem", color: "#4B5563" }}>
               {m.footer.copyright}
