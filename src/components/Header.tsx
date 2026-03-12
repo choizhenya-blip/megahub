@@ -421,27 +421,60 @@ export function Header() {
                 onSubmit={handleConfirmOrder}
                 className="flex-1 overflow-y-auto px-5 py-5 flex flex-col gap-4"
               >
-                {/* Order summary (compact) */}
+                {/* Order summary — total */}
                 <div
-                  className="rounded-lg px-3 py-2.5 mb-1"
-                  style={{ background: "#F8FAFC", border: "1px solid #E5E7EB" }}
+                  className="flex items-center justify-between rounded-xl px-3 py-2.5"
+                  style={{ background: "#FFF7ED", border: "1.5px solid #FED7AA" }}
                 >
+                  <div>
+                    <p
+                      style={{
+                        fontFamily: "system-ui,sans-serif",
+                        fontSize: "0.7rem",
+                        color: "#9A3412",
+                        fontWeight: 500,
+                        marginBottom: 1,
+                      }}
+                    >
+                      {cartCount} {cartCount === 1 ? "позиция" : cartCount < 5 ? "позиции" : "позиций"}
+                    </p>
+                    <span
+                      style={{
+                        fontFamily: "system-ui,sans-serif",
+                        fontSize: "0.8125rem",
+                        fontWeight: 600,
+                        color: "#111827",
+                      }}
+                    >
+                      {m.cart.total}
+                    </span>
+                  </div>
+                  <span
+                    style={{
+                      fontFamily: "system-ui,sans-serif",
+                      fontWeight: 800,
+                      fontSize: "1.25rem",
+                      color: "#F97316",
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
+                    ₸&nbsp;{cartTotal.toLocaleString("ru-KZ")}
+                  </span>
+                </div>
+
+                {/* Order summary — delivery note */}
+                <div
+                  className="flex items-start gap-2 rounded-lg px-3 py-2.5 -mt-1"
+                  style={{ background: "#F0FDF4", border: "1px solid #BBF7D0" }}
+                >
+                  <Truck size={14} style={{ color: "#16A34A", flexShrink: 0, marginTop: 2 }} />
                   <p
                     style={{
                       fontFamily: "system-ui,sans-serif",
                       fontSize: "0.75rem",
-                      color: "#6B7280",
-                      marginBottom: "0.25rem",
-                    }}
-                  >
-                    {items.length} {items.length === 1 ? "позиция" : "позиций"} · ₸{" "}
-                    {cartTotal.toLocaleString("ru-KZ")}
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "system-ui,sans-serif",
-                      fontSize: "0.72rem",
-                      color: "#9CA3AF",
+                      color: "#15803D",
+                      lineHeight: 1.5,
+                      fontWeight: 500,
                     }}
                   >
                     {m.cart.deliveryNote}
