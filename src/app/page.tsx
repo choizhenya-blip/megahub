@@ -22,6 +22,13 @@ import {
 } from "lucide-react";
 
 // ─── Multilingual title helper ───────────────────────────────
+function getStockLabel(stock: number, m: ReturnType<typeof useI18n>["m"]): string {
+  if (stock < 10)  return `${m.book.inStockPrefix} ${m.book.stockLessThan10}`;
+  if (stock < 30)  return `${m.book.inStockPrefix} ${m.book.stockMoreThan10}`;
+  if (stock < 50)  return `${m.book.inStockPrefix} ${m.book.stockMoreThan30}`;
+  return `${m.book.inStockPrefix} ${m.book.stockMoreThan50}`;
+}
+
 function getBookTitle(book: any, lang: string): string {
   const l = lang.toLowerCase();
   if (l === "kz" && book.title_kz) return book.title_kz;
@@ -191,7 +198,7 @@ function BookCard({ book, onAdd }: { book: any; onAdd: (id: string) => void }) {
             color: outOfStock ? "#DC2626" : "#16A34A" }}>
             {outOfStock
               ? m.book.outOfStock
-              : `${m.book.inStockPrefix} ${book.stock_count} ${m.book.inStockSuffix}`}
+              : getStockLabel(book.stock_count ?? 0, m)}
           </span>
         </div>
         <div className="flex items-center justify-between gap-2 mt-auto">
