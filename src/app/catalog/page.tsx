@@ -393,6 +393,11 @@ function CatalogInner() {
   const [sort, setSort] = useState<SortKey>("cheap");
   const [subjects, setSubjects] = useState<string[]>([]);
   const [classes, setClasses] = useState<number[]>([]);
+  // Pagination
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  // Reset to page 1 when filters/sort/search changes
+  useEffect(() => { setPage(1); }, [search, sort, subjects, classes, pageSize]);
 
   useEffect(() => {
     let cancelled = false;
@@ -459,6 +464,12 @@ function CatalogInner() {
 
     return list;
   }, [books, lang, subjects, classes, search, sort]);
+
+  const totalPages = Math.ceil(visibleBooks.length / pageSize);
+  const pagedBooks = useMemo(
+    () => visibleBooks.slice((page - 1) * pageSize, page * pageSize),
+    [visibleBooks, page, pageSize],
+  );
 
   return (
     <div className="min-h-screen" style={{ background: "#F8FAFC" }}>
@@ -565,8 +576,8 @@ function CatalogInner() {
                   />
                 </div>
 
-                {/* Sort */}
-                <div className="flex items-center gap-1">
+                {/* Sort + Per-page */}
+                <div className="flex items-center gap-2">
                   <span className="hidden sm:inline text-xs text-slate-500" style={{ fontFamily: "system-ui,sans-serif" }}>
                     {m.catalogFilters.sortLabel}:
                   </span>
@@ -580,6 +591,19 @@ function CatalogInner() {
                       <option value="cheap">{m.catalogFilters.sortCheapFirst}</option>
                       <option value="expensive">{m.catalogFilters.sortExpensiveFirst}</option>
                       <option value="new">{m.catalogFilters.sortNew}</option>
+                    </select>
+                    <ChevronDown className="pointer-events-none absolute right-2 top-2.5 h-3.5 w-3.5 text-slate-400" />
+                  </div>
+                  <div className="relative">
+                    <select
+                      value={pageSize}
+                      onChange={(e) => setPageSize(Number(e.target.value))}
+                      className="appearance-none pl-3 pr-7 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                      style={{ fontFamily: "system-ui,sans-serif", color: "#111827" }}
+                    >
+                      {[10, 20, 50, 100].map((n) => (
+                        <option key={n} value={n}>{n} / стр.</option>
+                      ))}
                     </select>
                     <ChevronDown className="pointer-events-none absolute right-2 top-2.5 h-3.5 w-3.5 text-slate-400" />
                   </div>
@@ -598,10 +622,62 @@ function CatalogInner() {
                     {m.catalog.empty}
                   </div>
                 )
-                : visibleBooks.map((b) => (
+                : pagedBooks.map((b) => (
                   <BookCard key={b.id} b={b} lang={lang} m={m} />
                 ))}
             </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-1 mt-6">
+                {/* Prev */}
+                <button
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page === 1}
+                  className="flex items-center justify-center w-9 h-9 rounded-lg border border-slate-200 bg-white text-slate-700 disabled:text-slate-300 disabled:cursor-not-allowed hover:border-orange-400 hover:text-orange-500 transition-colors"
+                  style={{ fontFamily: "system-ui,sans-serif" }}
+                >
+                  <ChevronLeft size={16} />
+                </button>
+
+                {/* Page buttons */}
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 2)
+                  .reduce<(number | "…")[]>((acc, p, idx, arr) => {
+                    if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…");
+                    acc.push(p);
+                    return acc;
+                  }, [])
+                  .map((item, idx) =>
+                    item === "…" ? (
+                      <span key={`ellipsis-${idx}`} className="w-9 text-center text-slate-400 text-sm">…</span>
+                    ) : (
+                      <button
+                        key={item}
+                        onClick={() => setPage(item as number)}
+                        className="w-9 h-9 rounded-lg border text-sm font-medium transition-colors"
+                        style={{
+                          fontFamily: "system-ui,sans-serif",
+                          borderColor: page === item ? "#F97316" : "#E2E8F0",
+                          background: page === item ? "#FFF7ED" : "#fff",
+                          color: page === item ? "#F97316" : "#374151",
+                          fontWeight: page === item ? 700 : 500,
+                        }}
+                      >{item}</button>
+                    )
+                  )}
+
+                {/* Next */}
+                <button
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={page === totalPages}
+                  className="flex items-center justify-center w-9 h-9 rounded-lg border border-slate-200 bg-white text-slate-700 disabled:text-slate-300 disabled:cursor-not-allowed hover:border-orange-400 hover:text-orange-500 transition-colors"
+                  style={{ fontFamily: "system-ui,sans-serif" }}
+                >
+                  <ChevronRightIcon size={16} />
+                </button>
+              </div>
+            )}
           </section>
         </div>
       </main>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, useMemo } from "react";
+import { useState, useRef, useCallback, useMemo, useEffect } from "react";
 import {
   ChevronDown, ChevronRight, RefreshCw, Upload, ImageOff,
   Link2, FileText, CheckCircle2, XCircle, Package, Settings2,
@@ -462,6 +462,7 @@ function FilterBar({
   classLevel, setClassLevel,
   sortKey, setSortKey,
   count, total,
+  pageSize, onPageSizeChange,
 }: {
   books: Book[];
   search: string; setSearch: (v: string) => void;
@@ -469,6 +470,7 @@ function FilterBar({
   classLevel: number | null; setClassLevel: (v: number | null) => void;
   sortKey: SortKey; setSortKey: (v: SortKey) => void;
   count: number; total: number;
+  pageSize: number; onPageSizeChange: (n: number) => void;
 }) {
   const subjects = useMemo(
     () => [...new Set(books.map((b) => b.subject).filter(Boolean) as string[])].sort(),
@@ -549,7 +551,7 @@ function FilterBar({
           <option value="stock_desc">Остаток ↓</option>
         </select>
 
-        {/* Clear + count */}
+        {/* Clear + per-page + count */}
         {hasFilter && (
           <button
             onClick={() => { setSearch(""); setSubject(""); setClassLevel(null); }}
@@ -558,9 +560,22 @@ function FilterBar({
             Сбросить
           </button>
         )}
-        <span style={{ fontSize: 12, color: "#9CA3AF", marginLeft: "auto", whiteSpace: "nowrap" }}>
-          {count} из {total}
-        </span>
+        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+          <select
+            value={pageSize}
+            onChange={(e) => onPageSizeChange(Number(e.target.value))}
+            style={{ ...inp, cursor: "pointer", fontSize: 12, padding: "5px 8px" }}
+            onFocus={(e) => (e.currentTarget.style.borderColor = "#F97316")}
+            onBlur={(e) => (e.currentTarget.style.borderColor = "#E5E7EB")}
+          >
+            {[10, 20, 50, 100].map((n) => (
+              <option key={n} value={n}>{n} / стр.</option>
+            ))}
+          </select>
+          <span style={{ fontSize: 12, color: "#9CA3AF", whiteSpace: "nowrap" }}>
+            {count} из {total}
+          </span>
+        </div>
       </div>
     </div>
   );
@@ -1193,6 +1208,11 @@ function ProductsTab({
   const [filterSubject, setFilterSubject] = useState("");
   const [filterClass, setFilterClass] = useState<number | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("title_asc");
+  // Pagination
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  // Reset to page 1 whenever filters or page size change
+  useEffect(() => { setPage(1); }, [filterSearch, filterSubject, filterClass, sortKey, pageSize]);
 
   function updateLocal(id: string, fields: Partial<Book>) {
     setBooks((prev) => prev.map((b) => (b.id === id ? { ...b, ...fields } : b)));
@@ -1247,6 +1267,12 @@ function ProductsTab({
     return list;
   }, [books, filterSearch, filterSubject, filterClass, sortKey]);
 
+  const totalPages = Math.ceil(visibleBooks.length / pageSize);
+  const pagedBooks = useMemo(
+    () => visibleBooks.slice((page - 1) * pageSize, page * pageSize),
+    [visibleBooks, page, pageSize],
+  );
+
   return (
     <div>
       {/* Add product form */}
@@ -1264,11 +1290,12 @@ function ProductsTab({
           {/* Filter bar */}
           <FilterBar
             books={books}
-            search={filterSearch} setSearch={setFilterSearch}
-            subject={filterSubject} setSubject={setFilterSubject}
-            classLevel={filterClass} setClassLevel={setFilterClass}
-            sortKey={sortKey} setSortKey={setSortKey}
+            search={filterSearch} setSearch={(v) => { setFilterSearch(v); setPage(1); }}
+            subject={filterSubject} setSubject={(v) => { setFilterSubject(v); setPage(1); }}
+            classLevel={filterClass} setClassLevel={(v) => { setFilterClass(v); setPage(1); }}
+            sortKey={sortKey} setSortKey={(v) => { setSortKey(v); setPage(1); }}
             count={visibleBooks.length} total={books.length}
+            pageSize={pageSize} onPageSizeChange={(n) => { setPageSize(n); setPage(1); }}
           />
 
           {visibleBooks.length === 0 ? (
@@ -1285,7 +1312,7 @@ function ProductsTab({
               </div>
 
               {/* Rows */}
-              {visibleBooks.map((book) => {
+              {pagedBooks.map((book) => {
                 const isOpen = expanded === book.id;
                 const title = bookTitle(book);
                 const sc = stockColor(book.stock_count);
@@ -1424,6 +1451,53 @@ function ProductsTab({
                   </div>
                 );
               })}
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 4, padding: "12px 16px", borderTop: "1px solid #F3F4F6" }}>
+                  {/* Prev */}
+                  <button
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={page === 1}
+                    style={{ width: 32, height: 32, borderRadius: 8, border: "1.5px solid #E5E7EB", background: page === 1 ? "#F9FAFB" : "#fff", color: page === 1 ? "#CBD5E1" : "#374151", cursor: page === 1 ? "not-allowed" : "pointer", fontSize: 15, fontWeight: 600, display: "flex", alignItems: "center", justifyContent: "center" }}
+                  >‹</button>
+
+                  {/* Page buttons */}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1)
+                    .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 2)
+                    .reduce<(number | "…")[]>((acc, p, idx, arr) => {
+                      if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…");
+                      acc.push(p);
+                      return acc;
+                    }, [])
+                    .map((item, idx) =>
+                      item === "…" ? (
+                        <span key={`ellipsis-${idx}`} style={{ width: 32, textAlign: "center", color: "#9CA3AF", fontSize: 13 }}>…</span>
+                      ) : (
+                        <button
+                          key={item}
+                          onClick={() => setPage(item as number)}
+                          style={{
+                            width: 32, height: 32, borderRadius: 8,
+                            border: "1.5px solid",
+                            borderColor: page === item ? "#F97316" : "#E5E7EB",
+                            background: page === item ? "#FFF7ED" : "#fff",
+                            color: page === item ? "#F97316" : "#374151",
+                            fontSize: 13, fontWeight: page === item ? 700 : 500,
+                            cursor: "pointer",
+                          }}
+                        >{item}</button>
+                      )
+                    )}
+
+                  {/* Next */}
+                  <button
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={page === totalPages}
+                    style={{ width: 32, height: 32, borderRadius: 8, border: "1.5px solid #E5E7EB", background: page === totalPages ? "#F9FAFB" : "#fff", color: page === totalPages ? "#CBD5E1" : "#374151", cursor: page === totalPages ? "not-allowed" : "pointer", fontSize: 15, fontWeight: 600, display: "flex", alignItems: "center", justifyContent: "center" }}
+                  >›</button>
+                </div>
+              )}
             </div>
           )}
         </>
