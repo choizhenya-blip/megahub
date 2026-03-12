@@ -1,66 +1,51 @@
-import { signIn } from "./actions";
+import { LoginForm } from "./LoginForm";
 
-export default function AdminLoginPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>;
-}) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-          Админ-панель
-        </h1>
-
-        <form action={signIn} className="flex flex-col gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Пароль
-            </label>
-            <input
-              type="password"
-              name="password"
-              required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <LoginError searchParams={searchParams} />
-
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white rounded-lg py-2 text-sm font-medium hover:bg-blue-700 transition-colors mt-2"
-          >
-            Войти
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-}
-
-async function LoginError({
+export default async function AdminLoginPage({
   searchParams,
 }: {
   searchParams: Promise<{ error?: string }>;
 }) {
   const params = await searchParams;
-  if (!params.error) return null;
+  const error = params.error ? decodeURIComponent(params.error) : undefined;
+
   return (
-    <p className="text-sm text-red-600 text-center">
-      {decodeURIComponent(params.error)}
-    </p>
+    <div
+      className="min-h-screen flex items-center justify-center"
+      style={{ background: "linear-gradient(135deg,#001A33 0%,#002D55 60%,#001A33 100%)" }}
+    >
+      <div
+        className="bg-white rounded-2xl shadow-2xl p-8 w-full"
+        style={{ maxWidth: 380 }}
+      >
+        {/* Logo */}
+        <div className="flex items-center gap-3 mb-6">
+          <div
+            className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ background: "#F97316" }}
+          >
+            <svg viewBox="0 0 20 20" fill="none" width={20} height={20}>
+              <rect x="3" y="4" width="6" height="12" rx="1" fill="white" opacity="0.9" />
+              <rect x="11" y="4" width="6" height="12" rx="1" fill="white" opacity="0.7" />
+            </svg>
+          </div>
+          <div>
+            <p
+              className="text-xs font-semibold uppercase tracking-widest"
+              style={{ fontFamily: "system-ui,sans-serif", color: "#9CA3AF", lineHeight: 1 }}
+            >
+              MegaHub Education
+            </p>
+            <p
+              className="text-base font-bold"
+              style={{ fontFamily: "system-ui,sans-serif", color: "#111827" }}
+            >
+              Админ-панель
+            </p>
+          </div>
+        </div>
+
+        <LoginForm error={error} />
+      </div>
+    </div>
   );
 }
