@@ -770,44 +770,62 @@ export function Header() {
                     style={{ borderColor: "#E5E7EB" }}
                   >
                     {/* Total */}
-                    <div className="flex items-center justify-between mb-3">
+                    <div
+                      className="flex items-center justify-between mb-3 px-3 py-2.5 rounded-xl"
+                      style={{ background: "#FFF7ED", border: "1.5px solid #FED7AA" }}
+                    >
+                      <div>
+                        <p
+                          style={{
+                            fontFamily: "system-ui,sans-serif",
+                            fontSize: "0.7rem",
+                            color: "#9A3412",
+                            fontWeight: 500,
+                            marginBottom: 1,
+                          }}
+                        >
+                          {cartCount} {cartCount === 1 ? "позиция" : cartCount < 5 ? "позиции" : "позиций"}
+                        </p>
+                        <span
+                          style={{
+                            fontFamily: "system-ui,sans-serif",
+                            fontWeight: 600,
+                            fontSize: "0.875rem",
+                            color: "#111827",
+                          }}
+                        >
+                          {m.cart.total}
+                        </span>
+                      </div>
                       <span
                         style={{
                           fontFamily: "system-ui,sans-serif",
-                          fontWeight: 600,
-                          fontSize: "0.9375rem",
-                          color: "#111827",
+                          fontWeight: 800,
+                          fontSize: "1.375rem",
+                          color: "#F97316",
+                          letterSpacing: "-0.02em",
                         }}
                       >
-                        {m.cart.total}
-                      </span>
-                      <span
-                        style={{
-                          fontFamily: "system-ui,sans-serif",
-                          fontWeight: 700,
-                          fontSize: "1.0625rem",
-                          color: "#111827",
-                        }}
-                      >
-                        ₸ {cartTotal.toLocaleString("ru-KZ")}
+                        ₸&nbsp;{cartTotal.toLocaleString("ru-KZ")}
                       </span>
                     </div>
 
                     {/* Delivery note */}
                     <div
                       className="flex items-start gap-2 mb-4 px-3 py-2.5 rounded-lg"
-                      style={{ background: "#F8FAFC", border: "1px solid #E5E7EB" }}
+                      style={{ background: "#F0FDF4", border: "1px solid #BBF7D0" }}
                     >
                       <Truck
-                        size={14}
-                        style={{ color: "#6B7280", flexShrink: 0, marginTop: 1 }}
+                        size={15}
+                        style={{ color: "#16A34A", flexShrink: 0, marginTop: 1 }}
                       />
                       <p
                         style={{
                           fontFamily: "system-ui,sans-serif",
-                          fontSize: "0.72rem",
-                          color: "#4B5563",
+                          fontSize: "0.775rem",
+                          color: "#15803D",
                           lineHeight: 1.5,
+                          fontWeight: 500,
                         }}
                       >
                         {m.cart.deliveryNote}
