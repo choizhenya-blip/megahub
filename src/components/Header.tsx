@@ -294,7 +294,7 @@ export function Header() {
                 onClick={() => setMobileOpen((o) => !o)}
                 aria-label="Меню"
               >
-                {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+                {mobileOpen ? <X size={20} style={{ color: "#374151" }} /> : <Menu size={20} style={{ color: "#374151" }} />}
               </button>
             </div>
           </div>
