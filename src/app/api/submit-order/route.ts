@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { buildBitrixLead, BitrixOrderPayload } from "@/lib/bitrix";
 import { sendTrelloNotification } from "@/lib/notifications";
 import { insertOrder, decrementStock, type OrderLineItem } from "@/lib/orders";
+import { sendNewOrderNotification } from "@/lib/telegram";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -112,7 +113,27 @@ export async function POST(req: NextRequest) {
     // Non-fatal
   }
 
-  // ── Step 4: Bitrix24 CRM (optional) ─────────────────────
+  // ── Step 4: Telegram notification ───────────────────────
+  console.log("[submit-order] ── Step 4: Sending Telegram notification...");
+  try {
+    await sendNewOrderNotification({
+      name: body.name,
+      phone: body.phone,
+      address: body.address,
+      category,
+      items: lineItems.map((i) => ({
+        titleRu: i.title_ru,
+        qty: i.qty,
+        price: i.price,
+      })),
+      totalPrice: body.totalPrice,
+    });
+  } catch (tgErr) {
+    console.error("[submit-order] ⚠️  Telegram notification failed:", tgErr);
+    // Non-fatal
+  }
+
+  // ── Step 5: Bitrix24 CRM (optional) ─────────────────────
   const webhookUrl = process.env.BITRIX_WEBHOOK_URL;
   if (!webhookUrl) {
     console.log("[submit-order] ── Step 4: Bitrix24 skipped (BITRIX_WEBHOOK_URL not set).");
