@@ -177,6 +177,17 @@ export const en = {
     supabaseTitle: "Supabase is unavailable (CORS)",
     supabaseSubtitle: "Showing demo data. In a real browser, data will load from the database.",
   },
+  notFound: {
+    title: "Page not found",
+    subtitle: "This page doesn't exist. The link may be outdated or changed.",
+    cta: "Go home",
+  },
+  errorPage: {
+    title: "Something went wrong",
+    subtitle: "An unexpected error occurred. Try refreshing the page.",
+    retry: "Try again",
+    cta: "Go home",
+  },
   language: { label: "Language", ru: "RU", kz: "KZ", en: "EN" },
   forAuthors: {
     heroTitle: "Become a MegaHub Education author",

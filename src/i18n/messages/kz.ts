@@ -177,6 +177,17 @@ export const kz = {
     supabaseTitle: "Supabase қолжетімсіз (CORS)",
     supabaseSubtitle: "Демо-деректер көрсетілді. Нақты браузерде деректер БҚ-дан жүктеледі.",
   },
+  notFound: {
+    title: "Бет табылмады",
+    subtitle: "Мұндай бет жоқ. Сілтеме ескірген немесе өзгертілген болуы мүмкін.",
+    cta: "Басты бетке",
+  },
+  errorPage: {
+    title: "Бірдеңе дұрыс болмады",
+    subtitle: "Күтпеген қате орын алды. Бетті жаңартып көріңіз.",
+    retry: "Қайтадан көру",
+    cta: "Басты бетке",
+  },
   language: { label: "Тіл", ru: "RU", kz: "KZ", en: "EN" },
   forAuthors: {
     heroTitle: "MegaHub Education авторы болыңыз",

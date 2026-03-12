@@ -177,6 +177,17 @@ export const ru = {
     supabaseTitle: "Supabase недоступен из песочницы (CORS)",
     supabaseSubtitle: "Показаны демо-данные. В реальном браузере данные загрузятся из БД.",
   },
+  notFound: {
+    title: "Страница не найдена",
+    subtitle: "Такой страницы не существует. Возможно, ссылка устарела или была изменена.",
+    cta: "На главную",
+  },
+  errorPage: {
+    title: "Что-то пошло не так",
+    subtitle: "Произошла непредвиденная ошибка. Попробуйте обновить страницу.",
+    retry: "Попробовать снова",
+    cta: "На главную",
+  },
   language: { label: "Язык", ru: "RU", kz: "KZ", en: "EN" },
   forAuthors: {
     heroTitle: "Станьте автором MegaHub Education",
