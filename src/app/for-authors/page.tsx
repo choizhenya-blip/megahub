@@ -81,7 +81,7 @@ function ForAuthorsInner() {
       {/* HERO */}
       <section
         className="relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg,#1E3A8A 0%,#1D4ED8 55%,#2563EB 100%)" }}
+        style={{ background: "linear-gradient(135deg,#001A33 0%,#002D55 55%,#001A33 100%)" }}
       >
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute -right-16 -top-16 w-80 h-80 rounded-full opacity-10" style={{ background: "white" }} />
@@ -145,8 +145,8 @@ function ForAuthorsInner() {
               { icon: ShieldCheck, title: m.forAuthors.perks.rightsTitle, text: m.forAuthors.perks.rightsText },
             ].map(({ icon: Icon, title, text }) => (
               <div key={title} className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center bg-blue-600/10 mb-3">
-                  <Icon size={22} className="text-blue-700" />
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-3" style={{ background: "#FFF7ED" }}>
+                  <Icon size={22} style={{ color: "#F97316" }} />
                 </div>
                 <div className="text-base font-semibold text-slate-900 mb-1" style={{ fontFamily: "system-ui,sans-serif" }}>
                   {title}
@@ -170,7 +170,7 @@ function ForAuthorsInner() {
             {m.forAuthors.whyPoints.map((point, idx) => (
               <div key={idx} className="rounded-xl border border-slate-200 bg-white p-5 flex gap-4">
                 <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold"
-                  style={{ background: "#EFF6FF", color: "#1D4ED8", fontFamily: "system-ui,sans-serif" }}>
+                  style={{ background: "#FFF7ED", color: "#F97316", fontFamily: "system-ui,sans-serif" }}>
                   {idx + 1}
                 </div>
                 <div>
@@ -275,7 +275,7 @@ function ForAuthorsInner() {
                   disabled={!canSubmit || submitting}
                   className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-semibold text-white"
                   style={{
-                    background: !canSubmit || submitting ? "#94A3B8" : "#1D4ED8",
+                    background: !canSubmit || submitting ? "#94A3B8" : "#F97316",
                     fontFamily: "system-ui,sans-serif",
                     fontSize: "0.9375rem",
                     border: "none",

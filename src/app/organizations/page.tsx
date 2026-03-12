@@ -35,6 +35,7 @@ function OrganizationsInner() {
   const [phone, setPhone] = useState("");
   const [sending, setSending] = useState(false);
   const [toast, setToast] = useState<{ kind: "success" | "error"; title: string } | null>(null);
+  const [consentChecked, setConsentChecked] = useState(false);
 
   const canSubmit = useMemo(() => {
     return (
@@ -43,9 +44,10 @@ function OrganizationsInner() {
       institutionName.trim().length >= 3 &&
       contactName.trim().length >= 3 &&
       email.trim().length >= 5 &&
-      phone.trim().length >= 6
+      phone.trim().length >= 6 &&
+      consentChecked
     );
-  }, [bin, orgName, institutionName, contactName, email, phone]);
+  }, [bin, orgName, institutionName, contactName, email, phone, consentChecked]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -77,7 +79,7 @@ function OrganizationsInner() {
       {/* ── HERO ── */}
       <section
         className="relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg,#1E3A8A 0%,#1D4ED8 55%,#2563EB 100%)" }}
+        style={{ background: "linear-gradient(135deg,#001A33 0%,#002D55 55%,#001A33 100%)" }}
       >
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute -right-16 -top-16 w-80 h-80 rounded-full opacity-10" style={{ background: "white" }} />
@@ -137,8 +139,8 @@ function OrganizationsInner() {
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: "#EFF6FF" }}>
-                  <Building2 size={22} style={{ color: "#1D4ED8" }} />
+                  style={{ background: "#FFF7ED" }}>
+                  <Building2 size={22} style={{ color: "#F97316" }} />
                 </div>
                 <div>
                   <div className="text-base font-semibold text-slate-900" style={{ fontFamily: "system-ui,sans-serif" }}>
@@ -152,7 +154,7 @@ function OrganizationsInner() {
               <ul className="space-y-2.5">
                 {m.organizations.govPoints.map((point) => (
                   <li key={point} className="flex items-start gap-2.5">
-                    <CheckCircle size={15} className="flex-shrink-0 mt-0.5" style={{ color: "#1D4ED8" }} />
+                    <CheckCircle size={15} className="flex-shrink-0 mt-0.5" style={{ color: "#F97316" }} />
                     <span style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.875rem", color: "#374151", lineHeight: 1.55 }}>
                       {point}
                     </span>
@@ -297,13 +299,57 @@ function OrganizationsInner() {
                 />
               </div>
 
+              {/* Consent checkbox */}
+              <div className="md:col-span-2">
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "10px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={consentChecked}
+                    onChange={(e) => setConsentChecked(e.target.checked)}
+                    style={{
+                      marginTop: "3px",
+                      width: 16,
+                      height: 16,
+                      accentColor: "#F97316",
+                      flexShrink: 0,
+                      cursor: "pointer",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontFamily: "system-ui,sans-serif",
+                      fontSize: "0.8125rem",
+                      color: "#6B7280",
+                      lineHeight: 1.55,
+                    }}
+                  >
+                    Я согласен(-на) на сбор и обработку персональных данных представителя организации.{" "}
+                    <a
+                      href="/docs/consent-b2b.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: "#F97316", textDecoration: "underline" }}
+                    >
+                      Прочитать документ
+                    </a>
+                  </span>
+                </label>
+              </div>
+
               <div className="md:col-span-2 mt-2">
                 <button
                   type="submit"
                   disabled={!canSubmit || sending}
                   className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-semibold text-white"
                   style={{
-                    background: !canSubmit || sending ? "#94A3B8" : "#1D4ED8",
+                    background: !canSubmit || sending ? "#94A3B8" : "#F97316",
                     fontFamily: "system-ui,sans-serif",
                     fontSize: "0.9375rem",
                     border: "none",

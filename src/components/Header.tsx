@@ -35,6 +35,7 @@ export function Header() {
   const [checkoutPhone, setCheckoutPhone] = useState("");
   const [checkoutAddress, setCheckoutAddress] = useState("");
   const [checkoutSubmitting, setCheckoutSubmitting] = useState(false);
+  const [consentChecked, setConsentChecked] = useState(false);
   // Per-item "need more" comments (shown when stock limit is reached)
   const [moreComments, setMoreComments] = useState<Record<string, string>>({});
 
@@ -70,6 +71,7 @@ export function Header() {
     setCheckoutName("");
     setCheckoutPhone("");
     setCheckoutAddress("");
+    setConsentChecked(false);
     setMoreComments({});
   };
 
@@ -120,6 +122,7 @@ export function Header() {
     setCheckoutPhone("");
     setCheckoutAddress("");
     setCheckoutSubmitting(false);
+    setConsentChecked(false);
     setOrderSent(true);
     setTimeout(() => setOrderSent(false), 4000);
   };
@@ -154,7 +157,7 @@ export function Header() {
   };
 
   const canSubmitCheckout =
-    checkoutName.trim().length >= 2 && checkoutPhone.trim().length >= 6;
+    checkoutName.trim().length >= 2 && checkoutPhone.trim().length >= 6 && consentChecked;
 
   return (
     <>
@@ -499,6 +502,49 @@ export function Header() {
                     autoComplete="street-address"
                   />
                 </div>
+
+                {/* Consent checkbox */}
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "10px",
+                    cursor: "pointer",
+                    marginTop: "4px",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={consentChecked}
+                    onChange={(e) => setConsentChecked(e.target.checked)}
+                    style={{
+                      marginTop: "2px",
+                      width: 16,
+                      height: 16,
+                      accentColor: "#F97316",
+                      flexShrink: 0,
+                      cursor: "pointer",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontFamily: "system-ui,sans-serif",
+                      fontSize: "0.75rem",
+                      color: "#6B7280",
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    Я согласен(-на) на сбор и обработку моих персональных данных.{" "}
+                    <a
+                      href="/docs/consent-b2c.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: "#F97316", textDecoration: "underline" }}
+                    >
+                      Прочитать документ
+                    </a>
+                  </span>
+                </label>
 
                 {/* Submit */}
                 <button

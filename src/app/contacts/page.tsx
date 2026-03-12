@@ -32,8 +32,8 @@ function ContactsInner() {
       label: m.contacts.labelAddress,
       value: m.contacts.address,
       href: undefined as string | undefined,
-      accent: "#1D4ED8",
-      bg: "#EFF6FF",
+      accent: "#F97316",
+      bg: "#FFF7ED",
     },
     {
       icon: Mail,
@@ -58,7 +58,7 @@ function ContactsInner() {
       {/* HERO */}
       <section
         className="relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg,#1E3A8A 0%,#1D4ED8 55%,#2563EB 100%)", paddingTop: "4rem", paddingBottom: "4rem" }}
+        style={{ background: "linear-gradient(135deg,#001A33 0%,#002D55 55%,#001A33 100%)", paddingTop: "4rem", paddingBottom: "4rem" }}
       >
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -right-16 -top-16 w-72 h-72 rounded-full opacity-10" style={{ background: "white" }} />
@@ -259,7 +259,7 @@ function ContactsInner() {
                 disabled={!canSubmit || submitting}
                 className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-semibold text-white"
                 style={{
-                  background: !canSubmit || submitting ? "#94A3B8" : "#1D4ED8",
+                  background: !canSubmit || submitting ? "#94A3B8" : "#F97316",
                   fontFamily: "system-ui,sans-serif",
                   fontSize: "0.9375rem",
                   border: "none",
