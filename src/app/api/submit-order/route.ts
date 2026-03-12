@@ -168,6 +168,37 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // ── Step 6: Google Sheets Webhook (customer base) ───────
+  const sheetsWebhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
+  if (!sheetsWebhookUrl) {
+    console.log("[submit-order] ── Step 6: Google Sheets skipped (GOOGLE_SHEET_WEBHOOK_URL not set).");
+  } else {
+    console.log("[submit-order] ── Step 6: Sending to Google Sheets webhook...");
+    try {
+      // Clean phone: keep only + and digits
+      const cleanPhone = body.phone.replace(/[^\d+]/g, "");
+      const productsStr = body.items
+        .map((i) => `${i.titleRu} × ${i.qty}`)
+        .join("; ");
+
+      await fetch(sheetsWebhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          name:     body.name,
+          phone:    cleanPhone,
+          email:    (body as unknown as { email?: string }).email ?? "",
+          address:  body.address ?? "",
+          products: productsStr,
+        }),
+      });
+      console.log("[submit-order] ✅ Google Sheets webhook sent.");
+    } catch (gsErr) {
+      console.error("[submit-order] ⚠️  Google Sheets webhook failed:", gsErr);
+      // Non-fatal — DB and notifications already sent
+    }
+  }
+
   console.log("[submit-order] ══════════ ORDER COMPLETE ══════════\n");
   return NextResponse.json({ ok: true, orderId });
 }

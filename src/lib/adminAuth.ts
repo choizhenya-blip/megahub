@@ -31,7 +31,13 @@ export function verifyAdminToken(token: string): boolean {
   return false;
 }
 
+/** Plain env-var check — fallback when no DB hash is stored */
 export function verifyAdminPassword(password: string): boolean {
   if (!ADMIN_PASSWORD) return false;
   return password === ADMIN_PASSWORD;
+}
+
+/** HMAC-SHA256 hash of a password, used to persist a changed password in DB */
+export function hashPassword(password: string): string {
+  return createHmac("sha256", SECRET).update(`pwd:${password}`).digest("hex");
 }

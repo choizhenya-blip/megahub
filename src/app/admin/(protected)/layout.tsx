@@ -1,26 +1,14 @@
-import { signOut } from "../login/actions";
+import { AdminHeader } from "./AdminHeader";
 
-export const metadata = { title: "Админ — MegaHub" };
+export const metadata = { title: "Панель управления — MegaHub" };
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
-        <span className="font-semibold text-gray-800">MegaHub Admin</span>
-        <form action={signOut}>
-          <button
-            type="submit"
-            className="text-sm text-gray-500 hover:text-gray-800 transition-colors"
-          >
-            Выйти
-          </button>
-        </form>
-      </header>
-      <main className="p-6">{children}</main>
+    <div style={{ minHeight: "100vh", background: "#F8FAFC", display: "flex", flexDirection: "column" }}>
+      <AdminHeader />
+      <main style={{ flex: 1, maxWidth: 1200, width: "100%", margin: "0 auto", padding: "0 24px 48px" }}>
+        {children}
+      </main>
     </div>
   );
 }

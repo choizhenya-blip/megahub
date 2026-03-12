@@ -250,13 +250,14 @@ function BookCard({ book, onAdd }: { book: any; onAdd: (id: string) => void }) {
               background: outOfStock ? "#E5E7EB" : "#F97316",
               color: outOfStock ? "#9CA3AF" : "white",
               fontFamily: "system-ui,sans-serif", fontSize: "0.8125rem",
-              border: "none", cursor: outOfStock ? "not-allowed" : "pointer", whiteSpace: "nowrap"
+              border: "none", cursor: outOfStock ? "not-allowed" : "pointer",
+              whiteSpace: "nowrap", flexShrink: 0,
             }}
             onMouseEnter={e => { if (!outOfStock) (e.currentTarget as HTMLButtonElement).style.background = "#EA580C"; }}
             onMouseLeave={e => { if (!outOfStock) (e.currentTarget as HTMLButtonElement).style.background = "#F97316"; }}
           >
             {outOfStock
-              ? m.book.no
+              ? m.book.outOfStock
               : <><ShoppingCart size={14} /> {m.book.addToCart}</>
             }
           </button>
