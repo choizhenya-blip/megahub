@@ -190,7 +190,7 @@ export function Header() {
                     key={href}
                     href={href}
                     style={{
-                      color: active ? "#1D4ED8" : "#4B5563",
+                      color: active ? "#F97316" : "#4B5563",
                       textDecoration: "none",
                       fontFamily: "system-ui,sans-serif",
                       fontSize: "0.875rem",
@@ -198,11 +198,11 @@ export function Header() {
                       whiteSpace: "nowrap",
                     }}
                     onMouseEnter={(e) =>
-                      (e.currentTarget.style.color = "#1D4ED8")
+                      (e.currentTarget.style.color = "#F97316")
                     }
                     onMouseLeave={(e) =>
                       (e.currentTarget.style.color = active
-                        ? "#1D4ED8"
+                        ? "#F97316"
                         : "#4B5563")
                     }
                   >
@@ -289,7 +289,7 @@ export function Header() {
                 href={href}
                 className="block py-3 text-sm"
                 style={{
-                  color: pathname === href ? "#1D4ED8" : "#374151",
+                  color: pathname === href ? "#F97316" : "#374151",
                   textDecoration: "none",
                   fontFamily: "system-ui,sans-serif",
                   fontWeight: pathname === href ? 600 : 400,
@@ -506,7 +506,7 @@ export function Header() {
                   disabled={!canSubmitCheckout || checkoutSubmitting}
                   className="w-full py-3 rounded-lg font-semibold text-white mt-2"
                   style={{
-                    background: !canSubmitCheckout || checkoutSubmitting ? "#94A3B8" : "#1D4ED8",
+                    background: !canSubmitCheckout || checkoutSubmitting ? "#94A3B8" : "#F97316",
                     fontFamily: "system-ui,sans-serif",
                     fontSize: "0.9375rem",
                     border: "none",
@@ -773,7 +773,7 @@ export function Header() {
                       onClick={() => setCheckoutStep(true)}
                       className="w-full py-3 rounded-lg font-semibold text-white mb-2"
                       style={{
-                        background: "#1D4ED8",
+                        background: "#F97316",
                         fontFamily: "system-ui,sans-serif",
                         fontSize: "0.9375rem",
                         border: "none",

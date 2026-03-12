@@ -77,7 +77,7 @@ const MOCK_BOOKS = [
 ];
 
 const SUBJECT_META = {
-  "Математика":  { color: "#DBEAFE", accent: "#1D4ED8" },
+  "Математика":  { color: "#DBEAFE", accent: "#F97316" },
   "История":     { color: "#FEF3C7", accent: "#D97706" },
   "Химия":       { color: "#D1FAE5", accent: "#059669" },
   "Литература":  { color: "#EDE9FE", accent: "#7C3AED" },
@@ -97,7 +97,7 @@ const HOME_STATS_ICONS = [Users, BookMarked, Package, CheckCircle] as const;
 // ── Skeleton ────────────────────────────────────────────────
 function SkeletonCard() {
   return (
-    <div className="rounded-xl overflow-hidden flex flex-col"
+    <div className="rounded-2xl overflow-hidden flex flex-col"
       style={{ background: "white", border: "1px solid #E5E7EB" }}>
       <div className="relative overflow-hidden" style={{ height: 180, background: "#F1F5F9" }}>
         <div className="absolute inset-0" style={{
@@ -134,7 +134,7 @@ function ErrorBanner({ onRetry }: { onRetry: () => void }) {
         </p>
       </div>
       <button onClick={onRetry}
-        style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.75rem", color: "#1D4ED8",
+        style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.75rem", color: "#F97316",
           background: "none", border: "none", cursor: "pointer", fontWeight: 600, whiteSpace: "nowrap" }}>
         {m.catalog.retry}
       </button>
@@ -153,7 +153,7 @@ function BookCard({ book, onAdd }: { book: any; onAdd: (id: string) => void }) {
   const cartQty = cartItem?.qty ?? 0;
 
   return (
-    <div className="rounded-xl overflow-hidden flex flex-col transition-all duration-200"
+    <div className="rounded-2xl overflow-hidden flex flex-col transition-all duration-200"
       style={{ background: "white", border: "1px solid #E5E7EB", boxShadow: "0 1px 4px rgba(0,0,0,.05)" }}
       onMouseEnter={e => e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,.10)"}
       onMouseLeave={e => e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,.05)"}>
@@ -245,13 +245,16 @@ function BookCard({ book, onAdd }: { book: any; onAdd: (id: string) => void }) {
             })()
           ) : (
           <button onClick={() => !outOfStock && onAdd(book.id)} disabled={outOfStock}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg font-semibold transition-all duration-200"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl font-semibold transition-all duration-200"
             style={{
-              background: outOfStock ? "#E5E7EB" : "#1D4ED8",
+              background: outOfStock ? "#E5E7EB" : "#F97316",
               color: outOfStock ? "#9CA3AF" : "white",
               fontFamily: "system-ui,sans-serif", fontSize: "0.8125rem",
               border: "none", cursor: outOfStock ? "not-allowed" : "pointer", whiteSpace: "nowrap"
-            }}>
+            }}
+            onMouseEnter={e => { if (!outOfStock) (e.currentTarget as HTMLButtonElement).style.background = "#EA580C"; }}
+            onMouseLeave={e => { if (!outOfStock) (e.currentTarget as HTMLButtonElement).style.background = "#F97316"; }}
+          >
             {outOfStock
               ? m.book.no
               : <><ShoppingCart size={14} /> {m.book.addToCart}</>
@@ -338,7 +341,7 @@ function MegaHubLandingInner() {
 
       {/* ── HERO ── */}
       <section className="relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg,#1E3A8A 0%,#1D4ED8 55%,#2563EB 100%)" }}>
+        style={{ background: "linear-gradient(135deg,#001A33 0%,#002D55 55%,#001A33 100%)" }}>
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute -right-16 -top-16 w-80 h-80 rounded-full opacity-10" style={{ background: "white" }} />
           <div className="absolute right-40 bottom-0 w-56 h-56 rounded-full opacity-5" style={{ background: "white" }} />
@@ -452,8 +455,8 @@ function MegaHubLandingInner() {
                 <div key={label} className="flex items-center gap-3 p-4 rounded-xl"
                   style={{ background: "#F8FAFC", border: "1px solid #F3F4F6" }}>
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ background: "#EFF6FF" }}>
-                    <Icon size={16} style={{ color: "#1D4ED8" }}/>
+                    style={{ background: "#FFF7ED" }}>
+                    <Icon size={16} style={{ color: "#F97316" }}/>
                   </div>
                   <div>
                     <div style={{ fontFamily: "system-ui,sans-serif", fontWeight: 700, fontSize: "1.1rem", color: "#111827" }}>{value}</div>
@@ -492,7 +495,7 @@ function MegaHubLandingInner() {
               </div>
             </div>
             <a href="/catalog" className="hidden sm:inline-flex items-center gap-1"
-              style={{ color: "#1D4ED8", textDecoration: "none", fontFamily: "system-ui,sans-serif", fontSize: "0.875rem", fontWeight: 500 }}>
+              style={{ color: "#F97316", textDecoration: "none", fontFamily: "system-ui,sans-serif", fontSize: "0.875rem", fontWeight: 500 }}>
               {m.catalog.allCatalog} <ChevronRight size={16}/>
             </a>
           </div>

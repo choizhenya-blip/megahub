@@ -60,7 +60,7 @@ async function LoginError({
   if (!params.error) return null;
   return (
     <p className="text-sm text-red-600 text-center">
-      Неверный email или пароль
+      {decodeURIComponent(params.error)}
     </p>
   );
 }

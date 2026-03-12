@@ -271,7 +271,7 @@ function CatalogInner() {
   }, [books, lang, subjects, classes, search, sort]);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen" style={{ background: "#F8FAFC" }}>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
 
         {/* ── Retail Disclaimer Banner ── */}
@@ -295,7 +295,7 @@ function CatalogInner() {
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
-          <aside className={`${showFilters ? "block" : "hidden"} lg:block w-full lg:w-64 flex-shrink-0 bg-white border border-slate-200 rounded-xl p-4 space-y-6`}>
+          <aside className={`${showFilters ? "block" : "hidden"} lg:block w-full lg:w-64 flex-shrink-0 bg-white border border-slate-200 rounded-2xl p-4 space-y-6`}>
             <div className="flex items-center gap-2 mb-1">
               <Filter size={16} className="text-slate-600" />
               <h2 className="text-sm font-semibold text-slate-800" style={{ fontFamily: "system-ui,sans-serif" }}>
@@ -337,10 +337,10 @@ function CatalogInner() {
                       key={value}
                       type="button"
                       onClick={() => toggleClass(value)}
-                      className="text-xs rounded-md py-1"
+                      className="text-xs rounded-lg py-1"
                       style={{
                         fontFamily: "system-ui,sans-serif",
-                        background: active ? "#1D4ED8" : "#F1F5F9",
+                        background: active ? "#F97316" : "#F1F5F9",
                         color: active ? "#fff" : "#1F2933",
                       }}
                     >
@@ -412,7 +412,7 @@ function CatalogInner() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {loading
                 ? Array.from({ length: 6 }).map((_, idx) => (
-                    <div key={idx} className="rounded-xl border border-slate-200 bg-white h-44 animate-pulse" />
+                    <div key={idx} className="rounded-2xl border border-slate-200 bg-white h-44 animate-pulse" />
                   ))
                 : visibleBooks.length === 0
                 ? (
@@ -427,7 +427,7 @@ function CatalogInner() {
                     const cartQty = cartItem?.qty ?? 0;
 
                     return (
-                      <div key={b.id} className="rounded-xl border border-slate-200 bg-white p-4 flex flex-col gap-2">
+                      <div key={b.id} className="rounded-2xl border border-slate-200 bg-white p-4 flex flex-col gap-2 shadow-sm">
                         <p className="text-xs uppercase tracking-wide font-semibold text-blue-700" style={{ fontFamily: "system-ui,sans-serif" }}>
                           {getSubjectLocalized(buildSubjects(b.subject || ""), lang)}
                         </p>
@@ -476,14 +476,16 @@ function CatalogInner() {
                               type="button"
                               disabled={outOfStock}
                               onClick={() => !outOfStock && handleAdd(b)}
-                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-semibold"
+                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors"
                               style={{
                                 fontFamily: "system-ui,sans-serif",
-                                background: outOfStock ? "#E5E7EB" : "#1D4ED8",
+                                background: outOfStock ? "#E5E7EB" : "#F97316",
                                 color: outOfStock ? "#9CA3AF" : "#fff",
                                 cursor: outOfStock ? "not-allowed" : "pointer",
                                 border: "none",
                               }}
+                              onMouseEnter={(e) => { if (!outOfStock) (e.currentTarget as HTMLButtonElement).style.background = "#EA580C"; }}
+                              onMouseLeave={(e) => { if (!outOfStock) (e.currentTarget as HTMLButtonElement).style.background = "#F97316"; }}
                             >
                               {outOfStock ? (
                                 m.book.outOfStock
