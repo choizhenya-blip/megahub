@@ -58,10 +58,23 @@ if (missing.length) {
   process.exit(1);
 }
 
-const callbackUrl = `${appUrl}/api/trello-webhook`;
+// ── Resolve short board ID → full 24-char ID ─────────────────
+
 console.log("🔗 Registering Trello webhook...");
-console.log(`   Board   : ${boardId}`);
-console.log(`   Callback: ${callbackUrl}`);
+console.log(`   Board (short): ${boardId}`);
+
+const boardRes = await fetch(
+  `https://api.trello.com/1/boards/${boardId}?fields=id&key=${apiKey}&token=${token}`
+);
+if (!boardRes.ok) {
+  console.error("❌ Could not resolve board ID:", await boardRes.text());
+  process.exit(1);
+}
+const fullBoardId = (await boardRes.json()).id;
+console.log(`   Board (full) : ${fullBoardId}`);
+
+const callbackUrl = `${appUrl}/api/trello-webhook`;
+console.log(`   Callback     : ${callbackUrl}`);
 
 // ── Delete old webhooks for this board ────────────────────────
 
@@ -71,7 +84,7 @@ const listRes = await fetch(
 const existing = await listRes.json();
 
 for (const wh of Array.isArray(existing) ? existing : []) {
-  if (wh.idModel === boardId) {
+  if (wh.idModel === fullBoardId) {
     await fetch(`https://api.trello.com/1/webhooks/${wh.id}?key=${apiKey}&token=${token}`, {
       method: "DELETE",
     });
@@ -89,7 +102,7 @@ const createRes = await fetch(
     body: JSON.stringify({
       description: "MegaHub board webhook",
       callbackURL: callbackUrl,
-      idModel: boardId,
+      idModel: fullBoardId,
     }),
   }
 );

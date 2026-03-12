@@ -34,6 +34,19 @@ function loadEnv() {
 
 // ── Trello helpers ────────────────────────────────────────────
 
+/** Resolves a short board ID (from URL) to the full 24-char Trello ID */
+async function resolveBoardId(apiKey, token, shortId) {
+  const res = await fetch(
+    `https://api.trello.com/1/boards/${shortId}?fields=id&key=${apiKey}&token=${token}`
+  );
+  if (!res.ok) {
+    console.error("❌ Could not resolve board ID:", await res.text());
+    process.exit(1);
+  }
+  const board = await res.json();
+  return board.id;
+}
+
 async function deleteOldWebhooks(apiKey, token, boardId) {
   const res = await fetch(
     `https://api.trello.com/1/tokens/${token}/webhooks?key=${apiKey}&token=${token}`
@@ -89,8 +102,10 @@ if (!apiKey || !token || !boardId) {
 } else {
   const callbackUrl = `${tunnelUrl}/api/trello-webhook`;
   console.log("🔗 Registering Trello webhook...");
-  await deleteOldWebhooks(apiKey, token, boardId);
-  await registerWebhook(apiKey, token, boardId, callbackUrl);
+  const fullBoardId = await resolveBoardId(apiKey, token, boardId);
+  console.log(`   Board ID (full): ${fullBoardId}`);
+  await deleteOldWebhooks(apiKey, token, fullBoardId);
+  await registerWebhook(apiKey, token, fullBoardId, callbackUrl);
 }
 
 console.log("\n📡 Tunnel active. Press Ctrl+C to stop.\n");
