@@ -5,17 +5,27 @@
  * Required env vars (set in .env.local):
  *   TELEGRAM_BOT_TOKEN  — Bot token from @BotFather
  *   TELEGRAM_CHAT_ID    — Chat or group ID to send notifications to
- *
- * Optional:
- *   TRELLO_INVOICE_LIST_NAME — Trello list name that triggers "invoice" notification
- *                              (default: "Счёт выставлен")
- *   TRELLO_CLOSED_LIST_NAME  — Trello list name that triggers "closed" notification
- *                              (default: "Закрыто")
  */
 
 import { OrderItem } from "./notifications";
 
 const TELEGRAM_API = "https://api.telegram.org";
+
+// ── List labels with emojis ───────────────────────────────────
+
+const LIST_LABELS: Record<string, string> = {
+  "Входящие":          "📥 Входящие",
+  "Уточнение заказа":  "🔍 Уточнение заказа",
+  "Счет выставлен":    "🧾 Счет выставлен",
+  "Оплачено / В сборке": "💰 Оплачено / В сборке",
+  "Доставка":          "🚚 Доставка",
+  "Выполнено":         "✅ Выполнено",
+  "Отказ":             "❌ Отказ",
+};
+
+function listLabel(name: string): string {
+  return LIST_LABELS[name] ?? name;
+}
 
 // ── Low-level send ────────────────────────────────────────────
 
@@ -94,30 +104,28 @@ export async function sendNewOrderNotification(order: NewOrderPayload): Promise<
   await sendTelegramMessage(text);
 }
 
-export async function sendInvoiceNotification(
-  cardName: string,
-  cardUrl: string
-): Promise<void> {
-  const text = [
-    `🧾 <b>Счёт выставлен</b>`,
-    ``,
-    `📋 ${cardName}`,
-    `🔗 <a href="${cardUrl}">Открыть в Trello</a>`,
-    ``,
-    `🕐 ${new Date().toLocaleString("ru-KZ", { timeZone: "Asia/Almaty" })}`,
-  ].join("\n");
-
-  await sendTelegramMessage(text);
+export interface CardMovedPayload {
+  cardName:     string;
+  cardUrl:      string;
+  listBefore:   string;
+  listAfter:    string;
+  /** Full name of the Trello member who moved the card */
+  movedBy:      string;
 }
 
-export async function sendOrderClosedNotification(
-  cardName: string,
-  cardUrl: string
-): Promise<void> {
+export async function sendCardMovedNotification(payload: CardMovedPayload): Promise<void> {
+  const { cardName, cardUrl, listBefore, listAfter, movedBy } = payload;
+
   const text = [
-    `✅ <b>Заявка закрыта</b>`,
+    `🔄 <b>Смена статуса</b>`,
     ``,
-    `📋 ${cardName}`,
+    `📋 <b>${cardName}</b>`,
+    ``,
+    `${listLabel(listBefore)}`,
+    `  ↓`,
+    `${listLabel(listAfter)}`,
+    ``,
+    `👤 Исполнитель: ${movedBy}`,
     `🔗 <a href="${cardUrl}">Открыть в Trello</a>`,
     ``,
     `🕐 ${new Date().toLocaleString("ru-KZ", { timeZone: "Asia/Almaty" })}`,

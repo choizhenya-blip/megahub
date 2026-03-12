@@ -1,28 +1,24 @@
 /**
  * Trello webhook handler.
  *
- * Listens for card movements and sends Telegram notifications when
- * a card enters the "invoice" or "closed" list.
+ * Sends a Telegram notification on every card list change, showing:
+ *   - card name
+ *   - previous list → new list
+ *   - who moved the card (Trello member)
  *
- * Setup:
- *   1. Register a Trello webhook pointing to https://yourdomain.com/api/trello-webhook
- *      curl -s -X POST "https://api.trello.com/1/webhooks" \
- *        -d "key=YOUR_TRELLO_KEY&token=YOUR_TRELLO_TOKEN" \
- *        -d "callbackURL=https://yourdomain.com/api/trello-webhook" \
- *        -d "idModel=YOUR_BOARD_ID" \
- *        -d "description=MegaHub board"
- *
- * Required env vars (set in .env.local):
- *   TRELLO_INVOICE_LIST_NAME — Trello list name that means "invoice formed"
- *                              (default: "Счёт выставлен")
- *   TRELLO_CLOSED_LIST_NAME  — Trello list name that means "order closed"
- *                              (default: "Закрыто")
+ * Trello sends HEAD on webhook registration (must return 200),
+ * then POST for each action.
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { sendInvoiceNotification, sendOrderClosedNotification } from "@/lib/telegram";
+import { sendCardMovedNotification } from "@/lib/telegram";
 
-// ── Trello action types ──────────────────────────────────────
+// ── Trello payload types ──────────────────────────────────────
+
+interface TrelloMember {
+  fullName: string;
+  username: string;
+}
 
 interface TrelloCard {
   name: string;
@@ -42,6 +38,7 @@ interface TrelloActionData {
 
 interface TrelloAction {
   type: string;
+  memberCreator: TrelloMember;
   data: TrelloActionData;
 }
 
@@ -49,30 +46,23 @@ interface TrelloWebhookPayload {
   action: TrelloAction;
 }
 
-// ── Config ───────────────────────────────────────────────────
-
-const INVOICE_LIST = () =>
-  process.env.TRELLO_INVOICE_LIST_NAME ?? "Счёт выставлен";
-
-const CLOSED_LIST = () =>
-  process.env.TRELLO_CLOSED_LIST_NAME ?? "Закрыто";
+// ── Helpers ───────────────────────────────────────────────────
 
 function trelloCardUrl(shortLink: string): string {
   return `https://trello.com/c/${shortLink}`;
 }
 
-// ── Handlers ─────────────────────────────────────────────────
+// ── HTTP handlers ─────────────────────────────────────────────
 
 /**
- * Trello sends a HEAD/GET request to verify the webhook URL.
- * Must respond with 200.
+ * Trello sends HEAD to verify the callback URL during webhook registration.
  */
-export async function GET(): Promise<NextResponse> {
-  return new NextResponse("OK", { status: 200 });
-}
-
 export async function HEAD(): Promise<NextResponse> {
   return new NextResponse(null, { status: 200 });
+}
+
+export async function GET(): Promise<NextResponse> {
+  return new NextResponse("OK", { status: 200 });
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -89,26 +79,24 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: true });
   }
 
-  // We only care about card moves
-  if (action.type !== "updateCard" || !action.data.listAfter) {
+  // Only notify on card moves (listAfter present means the list changed)
+  if (action.type !== "updateCard" || !action.data.listAfter || !action.data.listBefore) {
     return NextResponse.json({ ok: true });
   }
 
-  const listName = action.data.listAfter.name;
-  const cardName = action.data.card.name;
-  const cardUrl  = trelloCardUrl(action.data.card.shortLink);
+  const listBefore = action.data.listBefore.name;
+  const listAfter  = action.data.listAfter.name;
+  const cardName   = action.data.card.name;
+  const cardUrl    = trelloCardUrl(action.data.card.shortLink);
+  const movedBy    = action.memberCreator?.fullName || action.memberCreator?.username || "Неизвестно";
 
-  console.log(`[trello-webhook] Card "${cardName}" moved to list "${listName}"`);
+  console.log(`[trello-webhook] "${cardName}": "${listBefore}" → "${listAfter}" by ${movedBy}`);
 
   try {
-    if (listName === INVOICE_LIST()) {
-      await sendInvoiceNotification(cardName, cardUrl);
-    } else if (listName === CLOSED_LIST()) {
-      await sendOrderClosedNotification(cardName, cardUrl);
-    }
+    await sendCardMovedNotification({ cardName, cardUrl, listBefore, listAfter, movedBy });
   } catch (err) {
     console.error("[trello-webhook] ⚠️  Telegram notification failed:", err);
-    // Non-fatal — still return 200 so Trello doesn't retry
+    // Non-fatal — always return 200 so Trello doesn't disable the webhook
   }
 
   return NextResponse.json({ ok: true });
