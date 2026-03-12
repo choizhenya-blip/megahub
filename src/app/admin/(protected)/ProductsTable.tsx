@@ -518,7 +518,9 @@ function FilterBar({
         </select>
 
         {/* Class buttons */}
-        <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+          <span style={{ fontSize: 10, fontWeight: 600, color: "#9CA3AF", textTransform: "uppercase", letterSpacing: "0.05em" }}>Класс</span>
+          <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
           {[1,2,3,4,5,6,7,8,9,10,11].map((c) => (
             <button
               key={c}
@@ -534,6 +536,7 @@ function FilterBar({
               {c}
             </button>
           ))}
+          </div>
         </div>
 
         {/* Sort */}
