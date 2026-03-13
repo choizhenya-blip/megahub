@@ -342,127 +342,169 @@ function MegaHubLandingInner() {
 
       {/* ── HERO ── */}
       <section className="relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg,#001A33 0%,#002D55 55%,#001A33 100%)" }}>
+        style={{ background: "linear-gradient(135deg,#001220 0%,#002244 60%,#001A33 100%)", minHeight: "540px", display: "flex", alignItems: "center" }}>
+
+        {/* Decorative blobs */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute -right-16 -top-16 w-80 h-80 rounded-full opacity-10" style={{ background: "white" }} />
-          <div className="absolute right-40 bottom-0 w-56 h-56 rounded-full opacity-5" style={{ background: "white" }} />
-          <svg className="absolute inset-0 w-full h-full opacity-5">
+          <div className="absolute -right-20 -top-20 w-96 h-96 rounded-full opacity-[0.07]" style={{ background: "white" }} />
+          <div className="absolute right-32 bottom-0 w-64 h-64 rounded-full opacity-[0.04]" style={{ background: "white" }} />
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full opacity-[0.025]"
+            style={{ background: "radial-gradient(circle,#F97316,transparent 70%)" }} />
+          {/* Dot grid */}
+          <svg className="absolute inset-0 w-full h-full opacity-[0.04]">
             <defs>
-              <pattern id="d" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
-                <circle cx="2" cy="2" r="1.4" fill="white"/>
+              <pattern id="d" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1.2" fill="white"/>
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#d)"/>
           </svg>
+          {/* Orange diagonal accent */}
+          <div className="absolute bottom-0 left-0 right-0 h-1"
+            style={{ background: "linear-gradient(90deg,transparent 0%,#F97316 40%,#FCD34D 70%,transparent 100%)", opacity: 0.6 }} />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-18">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium mb-7"
-            style={{ background: "rgba(255,255,255,.14)", color: "rgba(255,255,255,.9)", fontFamily: "system-ui,sans-serif" }}>
-            <Award size={12}/> {m.hero.badge}
-          </div>
+        <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+          <div className="max-w-3xl">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-8"
+              style={{ background: "rgba(249,115,22,.18)", color: "#FCA668", border: "1px solid rgba(249,115,22,.3)", fontFamily: "system-ui,sans-serif" }}>
+              <Award size={12}/> {m.hero.badge}
+            </div>
 
-          {/* Title */}
-          <h1 style={{ fontFamily: "'Georgia',serif", fontSize: "clamp(1.6rem,3.6vw,2.75rem)",
-            fontWeight: 700, color: "white", lineHeight: 1.2, letterSpacing: "-.02em", marginBottom: "0.5rem" }}>
-            {m.hero.titleTop}
-          </h1>
-          <h1 style={{ fontFamily: "'Georgia',serif", fontSize: "clamp(1.6rem,3.6vw,2.75rem)",
-            fontWeight: 700, color: "#FCD34D", lineHeight: 1.2, letterSpacing: "-.02em", marginBottom: "1rem" }}>
-            {m.hero.titleAccent}
-          </h1>
-          <p style={{ fontFamily: "system-ui,sans-serif", fontSize: "1.0625rem",
-            color: "rgba(255,255,255,.8)", lineHeight: 1.65, marginBottom: "2.5rem", maxWidth: 560 }}>
-            {m.hero.subtitle}
-          </p>
+            {/* Title */}
+            <h1 style={{
+              fontFamily: "'Georgia',serif",
+              fontSize: "clamp(1.9rem,4.5vw,3.25rem)",
+              fontWeight: 700,
+              color: "white",
+              lineHeight: 1.18,
+              letterSpacing: "-.025em",
+              marginBottom: "0.4rem",
+            }}>
+              {m.hero.titleTop}
+            </h1>
+            <h1 style={{
+              fontFamily: "'Georgia',serif",
+              fontSize: "clamp(1.9rem,4.5vw,3.25rem)",
+              fontWeight: 700,
+              lineHeight: 1.18,
+              letterSpacing: "-.025em",
+              marginBottom: "1.4rem",
+              background: "linear-gradient(90deg,#FCD34D,#F97316)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            } as React.CSSProperties}>
+              {m.hero.titleAccent}
+            </h1>
+            <p style={{
+              fontFamily: "system-ui,sans-serif",
+              fontSize: "1.075rem",
+              color: "rgba(255,255,255,.75)",
+              lineHeight: 1.7,
+              marginBottom: "3rem",
+              maxWidth: 540,
+            }}>
+              {m.hero.subtitle}
+            </p>
 
-          {/* ── PATH CARDS ── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
-            {/* Card 1: parent / student */}
-            <a href="/catalog"
-              className="group flex flex-col gap-3 rounded-2xl p-5 transition-all duration-200"
-              style={{
-                background: "rgba(255,255,255,.12)",
-                border: "1.5px solid rgba(255,255,255,.22)",
-                textDecoration: "none",
-                backdropFilter: "blur(6px)",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,.2)")}
-              onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,.12)")}
-            >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ background: "#F97316" }}>
-                <BookOpen size={20} color="white" />
-              </div>
-              <div>
-                <div style={{ fontFamily: "system-ui,sans-serif", fontWeight: 700, fontSize: "1rem", color: "white", marginBottom: "0.3rem" }}>
-                  {m.home.pathCard1Title}
+            {/* ── PATH CARDS ── */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
+              {/* Card 1: parent / student */}
+              <a href="/catalog"
+                className="flex flex-col gap-3 rounded-2xl p-5 transition-all duration-200"
+                style={{
+                  background: "rgba(249,115,22,.14)",
+                  border: "1.5px solid rgba(249,115,22,.35)",
+                  textDecoration: "none",
+                  backdropFilter: "blur(8px)",
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = "rgba(249,115,22,.22)";
+                  e.currentTarget.style.borderColor = "rgba(249,115,22,.55)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = "rgba(249,115,22,.14)";
+                  e.currentTarget.style.borderColor = "rgba(249,115,22,.35)";
+                }}
+              >
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: "#F97316" }}>
+                  <BookOpen size={20} color="white" />
                 </div>
-                <div style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.8125rem", color: "rgba(255,255,255,.72)", lineHeight: 1.55 }}>
-                  {m.home.pathCard1Sub}
+                <div>
+                  <div style={{ fontFamily: "system-ui,sans-serif", fontWeight: 700, fontSize: "1rem", color: "white", marginBottom: "0.3rem" }}>
+                    {m.home.pathCard1Title}
+                  </div>
+                  <div style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.8125rem", color: "rgba(255,255,255,.68)", lineHeight: 1.55 }}>
+                    {m.home.pathCard1Sub}
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-1 mt-auto"
-                style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.8125rem", fontWeight: 600, color: "#FCD34D" }}>
-                {m.home.pathCard1Cta} <ArrowRight size={14} />
-              </div>
-            </a>
+                <div className="flex items-center gap-1.5 mt-auto"
+                  style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.8125rem", fontWeight: 600, color: "#FCD34D" }}>
+                  {m.home.pathCard1Cta} <ArrowRight size={14} />
+                </div>
+              </a>
 
-            {/* Card 2: organization */}
-            <a href="/organizations"
-              className="group flex flex-col gap-3 rounded-2xl p-5 transition-all duration-200"
-              style={{
-                background: "rgba(255,255,255,.08)",
-                border: "1.5px solid rgba(255,255,255,.16)",
-                textDecoration: "none",
-                backdropFilter: "blur(6px)",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,.16)")}
-              onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,.08)")}
-            >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ background: "rgba(255,255,255,.18)" }}>
-                <Building2 size={20} color="white" />
-              </div>
-              <div>
-                <div style={{ fontFamily: "system-ui,sans-serif", fontWeight: 700, fontSize: "1rem", color: "white", marginBottom: "0.3rem" }}>
-                  {m.home.pathCard2Title}
+              {/* Card 2: organization */}
+              <a href="/organizations"
+                className="flex flex-col gap-3 rounded-2xl p-5 transition-all duration-200"
+                style={{
+                  background: "rgba(255,255,255,.07)",
+                  border: "1.5px solid rgba(255,255,255,.14)",
+                  textDecoration: "none",
+                  backdropFilter: "blur(8px)",
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = "rgba(255,255,255,.13)";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,.26)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = "rgba(255,255,255,.07)";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,.14)";
+                }}
+              >
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: "rgba(255,255,255,.15)" }}>
+                  <Building2 size={20} color="white" />
                 </div>
-                <div style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.8125rem", color: "rgba(255,255,255,.72)", lineHeight: 1.55 }}>
-                  {m.home.pathCard2Sub}
+                <div>
+                  <div style={{ fontFamily: "system-ui,sans-serif", fontWeight: 700, fontSize: "1rem", color: "white", marginBottom: "0.3rem" }}>
+                    {m.home.pathCard2Title}
+                  </div>
+                  <div style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.8125rem", color: "rgba(255,255,255,.68)", lineHeight: 1.55 }}>
+                    {m.home.pathCard2Sub}
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-1 mt-auto"
-                style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.8125rem", fontWeight: 600, color: "rgba(255,255,255,.8)" }}>
-                {m.home.pathCard2Cta} <ArrowRight size={14} />
-              </div>
-            </a>
+                <div className="flex items-center gap-1.5 mt-auto"
+                  style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.8125rem", fontWeight: 600, color: "rgba(255,255,255,.75)" }}>
+                  {m.home.pathCard2Cta} <ArrowRight size={14} />
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── HOME STATS ── */}
       <section style={{ background: "white", borderBottom: "1px solid #E5E7EB" }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
-          <p className="text-sm font-semibold text-center mb-6"
-            style={{ fontFamily: "system-ui,sans-serif", color: "#6B7280" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
+          <p className="text-xs font-bold uppercase tracking-widest text-center mb-6"
+            style={{ fontFamily: "system-ui,sans-serif", color: "#9CA3AF", letterSpacing: "0.12em" }}>
             {m.home.statsTitle}
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {m.home.statsItems.map(({ value, label }, idx) => {
               const Icon = HOME_STATS_ICONS[idx] ?? BookMarked;
               return (
-                <div key={label} className="flex items-center gap-3 p-4 rounded-xl"
-                  style={{ background: "#F8FAFC", border: "1px solid #F3F4F6" }}>
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ background: "#FFF7ED" }}>
-                    <Icon size={16} style={{ color: "#F97316" }}/>
+                <div key={label} className="flex flex-col items-center text-center p-5 rounded-2xl"
+                  style={{ background: "#F8FAFC", border: "1px solid #F0F2F5" }}>
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+                    style={{ background: "linear-gradient(135deg,#FFF7ED,#FFEDD5)" }}>
+                    <Icon size={20} style={{ color: "#F97316" }}/>
                   </div>
-                  <div>
-                    <div style={{ fontFamily: "system-ui,sans-serif", fontWeight: 700, fontSize: "1.1rem", color: "#111827" }}>{value}</div>
-                    <div style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.7rem", color: "#6B7280", lineHeight: 1.3 }}>{label}</div>
-                  </div>
+                  <div style={{ fontFamily: "system-ui,sans-serif", fontWeight: 800, fontSize: "1.375rem", color: "#111827", letterSpacing: "-0.02em" }}>{value}</div>
+                  <div style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.72rem", color: "#6B7280", lineHeight: 1.4, marginTop: 3 }}>{label}</div>
                 </div>
               );
             })}
@@ -475,12 +517,12 @@ function MegaHubLandingInner() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-8">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest mb-2"
-                style={{ color: "#F97316", fontFamily: "system-ui,sans-serif" }}>
+              <p className="text-xs font-bold uppercase tracking-widest mb-2"
+                style={{ color: "#F97316", fontFamily: "system-ui,sans-serif", letterSpacing: "0.12em" }}>
                 {m.catalog.eyebrow}
               </p>
               <div className="flex items-center gap-3 flex-wrap">
-                <h2 style={{ fontFamily: "'Georgia',serif", fontSize: "clamp(1.375rem,3vw,2rem)",
+                <h2 style={{ fontFamily: "'Georgia',serif", fontSize: "clamp(1.5rem,3vw,2.1rem)",
                   fontWeight: 700, color: "#111827", lineHeight: 1.2 }}>
                   {m.catalog.title}
                 </h2>
@@ -495,9 +537,14 @@ function MegaHubLandingInner() {
                 )}
               </div>
             </div>
-            <a href="/catalog" className="hidden sm:inline-flex items-center gap-1"
-              style={{ color: "#F97316", textDecoration: "none", fontFamily: "system-ui,sans-serif", fontSize: "0.875rem", fontWeight: 500 }}>
-              {m.catalog.allCatalog} <ChevronRight size={16}/>
+            <a href="/catalog"
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-all"
+              style={{ color: "#F97316", textDecoration: "none", fontFamily: "system-ui,sans-serif",
+                background: "#FFF7ED", border: "1px solid #FED7AA" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "#FFEDD5"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "#FFF7ED"; }}
+            >
+              {m.catalog.allCatalog} <ChevronRight size={15}/>
             </a>
           </div>
 
@@ -520,27 +567,17 @@ function MegaHubLandingInner() {
                   />
                 ))}
           </div>
-        </div>
-      </section>
 
-      {/* ── FOOTER ── */}
-      <footer style={{ background: "#111827" }} className="py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/logo.svg"
-                alt="MegaHub Education"
-                style={{ height: 36, width: "auto", filter: "brightness(0) invert(1)" }}
-              />
-            </div>
-            <p style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.8125rem", color: "#4B5563" }}>
-              {m.footer.copyright}
-            </p>
+          {/* View all — mobile */}
+          <div className="sm:hidden mt-6 text-center">
+            <a href="/catalog"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold"
+              style={{ color: "#F97316", background: "#FFF7ED", border: "1px solid #FED7AA", textDecoration: "none", fontFamily: "system-ui,sans-serif" }}>
+              {m.catalog.allCatalog} <ChevronRight size={15}/>
+            </a>
           </div>
         </div>
-      </footer>
+      </section>
     </div>
   );
 }

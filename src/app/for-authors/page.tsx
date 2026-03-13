@@ -76,56 +76,65 @@ function ForAuthorsInner() {
     }
   }
 
+  const inputStyle: React.CSSProperties = {
+    fontFamily: "system-ui,sans-serif",
+    color: "#111827",
+    width: "100%",
+    padding: "10px 14px",
+    fontSize: "0.9rem",
+    borderRadius: 10,
+    border: "1.5px solid #E5E7EB",
+    outline: "none",
+    background: "#FAFAFA",
+    transition: "border-color 0.15s, box-shadow 0.15s",
+  };
+  const onFocus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.target.style.borderColor = "#F97316";
+    e.target.style.boxShadow = "0 0 0 3px rgba(249,115,22,.12)";
+    e.target.style.background = "white";
+  };
+  const onBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.target.style.borderColor = "#E5E7EB";
+    e.target.style.boxShadow = "none";
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen" style={{ background: "#F8FAFC" }}>
       {/* HERO */}
-      <section
-        className="relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg,#001A33 0%,#002D55 55%,#001A33 100%)" }}
-      >
+      <section className="relative overflow-hidden"
+        style={{ background: "linear-gradient(135deg,#001220 0%,#002244 60%,#001A33 100%)" }}>
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute -right-16 -top-16 w-80 h-80 rounded-full opacity-10" style={{ background: "white" }} />
-          <div className="absolute right-40 bottom-0 w-56 h-56 rounded-full opacity-5" style={{ background: "white" }} />
+          <div className="absolute -right-16 -top-16 w-80 h-80 rounded-full opacity-[0.06]" style={{ background: "white" }} />
+          <div className="absolute right-40 bottom-0 w-56 h-56 rounded-full opacity-[0.03]" style={{ background: "white" }} />
+          <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg,transparent,rgba(249,115,22,.5),transparent)" }} />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
           <div className="max-w-2xl">
-            <h1
-              style={{
-                fontFamily: "'Georgia',serif",
-                fontSize: "clamp(1.6rem,3.6vw,2.6rem)",
-                fontWeight: 700,
-                color: "white",
-                lineHeight: 1.15,
-                letterSpacing: "-.02em",
-                marginBottom: "0.9rem",
-              }}
-            >
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
+              style={{ background: "rgba(249,115,22,.18)", color: "#FCA668", border: "1px solid rgba(249,115,22,.3)", fontFamily: "system-ui,sans-serif" }}>
+              <Users size={12} /> {m.forAuthors.heroTitle.split(" ").slice(0, 2).join(" ")}
+            </div>
+            <h1 style={{
+              fontFamily: "'Georgia',serif",
+              fontSize: "clamp(1.6rem,3.6vw,2.6rem)",
+              fontWeight: 700, color: "white",
+              lineHeight: 1.18, letterSpacing: "-.02em", marginBottom: "0.9rem",
+            }}>
               {m.forAuthors.heroTitle}
             </h1>
-            <p
-              style={{
-                fontFamily: "system-ui,sans-serif",
-                fontSize: "1.02rem",
-                color: "rgba(255,255,255,.82)",
-                lineHeight: 1.65,
-                marginBottom: "1.5rem",
-                maxWidth: 620,
-              }}
-            >
+            <p style={{
+              fontFamily: "system-ui,sans-serif", fontSize: "1.02rem",
+              color: "rgba(255,255,255,.75)", lineHeight: 1.65, marginBottom: "1.75rem", maxWidth: 560,
+            }}>
               {m.forAuthors.heroSubtitle}
             </p>
-            <a
-              href="#lead-form"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white"
+            <a href="#lead-form"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white"
               style={{
-                background: "#F97316",
-                fontFamily: "system-ui,sans-serif",
-                fontSize: "0.9375rem",
-                boxShadow: "0 4px 20px rgba(249,115,22,.4)",
-                textDecoration: "none",
-                width: "fit-content",
-              }}
-            >
+                background: "linear-gradient(135deg,#F97316,#EA580C)",
+                fontFamily: "system-ui,sans-serif", fontSize: "0.9375rem",
+                boxShadow: "0 4px 20px rgba(249,115,22,.45)", textDecoration: "none",
+              }}>
               {m.forAuthors.heroCta} <ArrowRight size={16} />
             </a>
           </div>
@@ -133,25 +142,31 @@ function ForAuthorsInner() {
       </section>
 
       {/* PERKS */}
-      <section className="py-12 lg:py-14 bg-white border-b border-slate-200">
+      <section className="py-12 lg:py-14" style={{ background: "white", borderBottom: "1px solid #F0F2F5" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-xl md:text-2xl font-semibold text-slate-900 mb-6" style={{ fontFamily: "'Georgia',serif" }}>
+          <p className="text-xs font-bold uppercase tracking-widest mb-2"
+            style={{ fontFamily: "system-ui,sans-serif", color: "#F97316", letterSpacing: "0.12em" }}>
+            {m.forAuthors.perksTitle}
+          </p>
+          <h2 className="mb-8" style={{ fontFamily: "'Georgia',serif", fontSize: "clamp(1.3rem,2.5vw,1.75rem)", fontWeight: 700, color: "#111827" }}>
             {m.forAuthors.perksTitle}
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {[
               { icon: Users, title: m.forAuthors.perks.reachTitle, text: m.forAuthors.perks.reachText },
               { icon: BadgeDollarSign, title: m.forAuthors.perks.moneyTitle, text: m.forAuthors.perks.moneyText },
               { icon: ShieldCheck, title: m.forAuthors.perks.rightsTitle, text: m.forAuthors.perks.rightsText },
             ].map(({ icon: Icon, title, text }) => (
-              <div key={title} className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-3" style={{ background: "#FFF7ED" }}>
+              <div key={title} className="rounded-2xl p-6"
+                style={{ background: "#F8FAFC", border: "1px solid #F0F2F5" }}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                  style={{ background: "linear-gradient(135deg,#FFF7ED,#FFEDD5)" }}>
                   <Icon size={22} style={{ color: "#F97316" }} />
                 </div>
-                <div className="text-base font-semibold text-slate-900 mb-1" style={{ fontFamily: "system-ui,sans-serif" }}>
+                <div className="font-semibold mb-2" style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.9375rem", color: "#111827" }}>
                   {title}
                 </div>
-                <div className="text-sm text-slate-600" style={{ fontFamily: "system-ui,sans-serif", lineHeight: 1.6 }}>
+                <div style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.875rem", color: "#6B7280", lineHeight: 1.65 }}>
                   {text}
                 </div>
               </div>
@@ -163,21 +178,26 @@ function ForAuthorsInner() {
       {/* WHY CHOOSE US */}
       <section className="py-12 lg:py-14" style={{ background: "#F8FAFC" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-xl md:text-2xl font-semibold text-slate-900 mb-6" style={{ fontFamily: "'Georgia',serif" }}>
+          <p className="text-xs font-bold uppercase tracking-widest mb-2"
+            style={{ fontFamily: "system-ui,sans-serif", color: "#F97316", letterSpacing: "0.12em" }}>
+            {m.forAuthors.whyTitle}
+          </p>
+          <h2 className="mb-8" style={{ fontFamily: "'Georgia',serif", fontSize: "clamp(1.3rem,2.5vw,1.75rem)", fontWeight: 700, color: "#111827" }}>
             {m.forAuthors.whyTitle}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {m.forAuthors.whyPoints.map((point, idx) => (
-              <div key={idx} className="rounded-xl border border-slate-200 bg-white p-5 flex gap-4">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold"
-                  style={{ background: "#FFF7ED", color: "#F97316", fontFamily: "system-ui,sans-serif" }}>
+              <div key={idx} className="rounded-2xl p-5 flex gap-4"
+                style={{ background: "white", border: "1px solid #F0F2F5", boxShadow: "0 1px 4px rgba(0,0,0,.04)" }}>
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-sm font-bold"
+                  style={{ background: "linear-gradient(135deg,#FFF7ED,#FFEDD5)", color: "#F97316", fontFamily: "system-ui,sans-serif" }}>
                   {idx + 1}
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-slate-900 mb-1" style={{ fontFamily: "system-ui,sans-serif" }}>
+                  <div className="font-semibold mb-1" style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.9rem", color: "#111827" }}>
                     {point.title}
                   </div>
-                  <div className="text-sm text-slate-600" style={{ fontFamily: "system-ui,sans-serif", lineHeight: 1.6 }}>
+                  <div style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.85rem", color: "#6B7280", lineHeight: 1.6 }}>
                     {point.text}
                   </div>
                 </div>
@@ -188,100 +208,65 @@ function ForAuthorsInner() {
       </section>
 
       {/* FORM */}
-      <section className="py-12 lg:py-14">
+      <section className="py-12 lg:py-14" style={{ background: "white", borderTop: "1px solid #F0F2F5" }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
-            <h2 id="lead-form" className="text-xl md:text-2xl font-semibold text-slate-900" style={{ fontFamily: "'Georgia',serif" }}>
-              {m.forAuthors.formTitle}
-            </h2>
+          <p className="text-xs font-bold uppercase tracking-widest mb-2"
+            style={{ fontFamily: "system-ui,sans-serif", color: "#F97316", letterSpacing: "0.12em" }}>
+            {m.forAuthors.formTitle}
+          </p>
+          <h2 id="lead-form" className="mb-8" style={{ fontFamily: "'Georgia',serif", fontSize: "clamp(1.3rem,2.5vw,1.75rem)", fontWeight: 700, color: "#111827" }}>
+            {m.forAuthors.formTitle}
+          </h2>
 
-            {toast && <div className="mt-4"><Toast kind={toast.kind} title={toast.title} /></div>}
+          {toast && <div className="mb-6"><Toast kind={toast.kind} title={toast.title} /></div>}
 
-            <form onSubmit={onSubmit} className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="rounded-2xl p-6 md:p-8"
+            style={{ background: "#F8FAFC", border: "1px solid #F0F2F5", boxShadow: "0 2px 12px rgba(0,0,0,.04)" }}>
+            <form onSubmit={onSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-xs font-semibold text-slate-600 mb-1" style={{ fontFamily: "system-ui,sans-serif" }}>
+                <label className="block text-xs font-semibold mb-1.5" style={{ fontFamily: "system-ui,sans-serif", color: "#374151" }}>
                   {m.forAuthors.form.fullName}
                 </label>
-                <input
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="w-full px-3 py-2.5 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                  style={{ fontFamily: "system-ui,sans-serif" }}
-                  autoComplete="name"
-                  required
-                />
+                <input value={fullName} onChange={(e) => setFullName(e.target.value)}
+                  style={inputStyle} onFocus={onFocus} onBlur={onBlur} autoComplete="name" required />
               </div>
-
               <div className="md:col-span-2">
-                <label className="block text-xs font-semibold text-slate-600 mb-1" style={{ fontFamily: "system-ui,sans-serif" }}>
+                <label className="block text-xs font-semibold mb-1.5" style={{ fontFamily: "system-ui,sans-serif", color: "#374151" }}>
                   {m.forAuthors.form.subject}
                 </label>
-                <input
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value)}
-                  className="w-full px-3 py-2.5 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                  style={{ fontFamily: "system-ui,sans-serif" }}
-                  required
-                />
+                <input value={subject} onChange={(e) => setSubject(e.target.value)}
+                  style={inputStyle} onFocus={onFocus} onBlur={onBlur} required />
               </div>
-
               <div className="md:col-span-2">
-                <label className="block text-xs font-semibold text-slate-600 mb-1" style={{ fontFamily: "system-ui,sans-serif" }}>
+                <label className="block text-xs font-semibold mb-1.5" style={{ fontFamily: "system-ui,sans-serif", color: "#374151" }}>
                   {m.forAuthors.form.portfolio}
                 </label>
-                <input
-                  value={portfolioUrl}
-                  onChange={(e) => setPortfolioUrl(e.target.value)}
-                  className="w-full px-3 py-2.5 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                  style={{ fontFamily: "system-ui,sans-serif" }}
-                  placeholder="https://"
-                  required
-                />
+                <input value={portfolioUrl} onChange={(e) => setPortfolioUrl(e.target.value)}
+                  style={inputStyle} onFocus={onFocus} onBlur={onBlur} placeholder="https://" required />
               </div>
-
               <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1" style={{ fontFamily: "system-ui,sans-serif" }}>
+                <label className="block text-xs font-semibold mb-1.5" style={{ fontFamily: "system-ui,sans-serif", color: "#374151" }}>
                   {m.forAuthors.form.email}
                 </label>
-                <input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3 py-2.5 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                  style={{ fontFamily: "system-ui,sans-serif" }}
-                  type="email"
-                  autoComplete="email"
-                  required
-                />
+                <input value={email} onChange={(e) => setEmail(e.target.value)}
+                  style={inputStyle} onFocus={onFocus} onBlur={onBlur} type="email" autoComplete="email" required />
               </div>
-
               <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1" style={{ fontFamily: "system-ui,sans-serif" }}>
+                <label className="block text-xs font-semibold mb-1.5" style={{ fontFamily: "system-ui,sans-serif", color: "#374151" }}>
                   {m.forAuthors.form.phone}
                 </label>
-                <input
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="w-full px-3 py-2.5 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                  style={{ fontFamily: "system-ui,sans-serif" }}
-                  type="tel"
-                  autoComplete="tel"
-                  required
-                />
+                <input value={phone} onChange={(e) => setPhone(e.target.value)}
+                  style={inputStyle} onFocus={onFocus} onBlur={onBlur} type="tel" autoComplete="tel" required />
               </div>
-
               <div className="md:col-span-2 mt-2">
-                <button
-                  type="submit"
-                  disabled={!canSubmit || submitting}
-                  className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-semibold text-white"
+                <button type="submit" disabled={!canSubmit || submitting}
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-white"
                   style={{
-                    background: !canSubmit || submitting ? "#94A3B8" : "#F97316",
-                    fontFamily: "system-ui,sans-serif",
-                    fontSize: "0.9375rem",
-                    border: "none",
+                    background: !canSubmit || submitting ? "#CBD5E1" : "linear-gradient(135deg,#F97316,#EA580C)",
+                    fontFamily: "system-ui,sans-serif", fontSize: "0.9375rem", border: "none",
                     cursor: !canSubmit || submitting ? "not-allowed" : "pointer",
-                  }}
-                >
+                    boxShadow: !canSubmit || submitting ? "none" : "0 4px 14px rgba(249,115,22,.35)",
+                  }}>
                   {submitting ? m.forAuthors.form.submitting : m.forAuthors.form.submit}
                 </button>
               </div>

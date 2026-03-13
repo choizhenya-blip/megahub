@@ -473,141 +473,155 @@ function CatalogInner() {
 
   return (
     <div className="min-h-screen" style={{ background: "#F8FAFC" }}>
+
+      {/* ── Page strip ── */}
+      <div style={{ background: "linear-gradient(135deg,#001220 0%,#002244 60%,#001A33 100%)", padding: "2rem 0 2rem" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest mb-1"
+              style={{ fontFamily: "system-ui,sans-serif", color: "rgba(249,115,22,.9)", letterSpacing: "0.12em" }}>
+              {m.catalog.eyebrow}
+            </p>
+            <h1 style={{ fontFamily: "'Georgia',serif", fontSize: "clamp(1.4rem,3vw,2rem)", fontWeight: 700, color: "white", lineHeight: 1.2 }}>
+              {m.catalog.title}
+            </h1>
+          </div>
+          {/* Disclaimer pill */}
+          <div className="flex items-start gap-2.5 px-4 py-2.5 rounded-xl max-w-sm"
+            style={{ background: "rgba(255,255,255,.08)", border: "1px solid rgba(255,255,255,.14)" }}>
+            <Info size={15} style={{ color: "#FCA668", flexShrink: 0, marginTop: 1 }} />
+            <p style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.775rem", color: "rgba(255,255,255,.7)", lineHeight: 1.5 }}>
+              {m.catalog.retailDisclaimer}
+            </p>
+          </div>
+        </div>
+      </div>
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
 
-        {/* Disclaimer */}
-        <div className="flex items-start gap-3 px-4 py-3.5 rounded-xl mb-6" style={{ background: "#EFF6FF", border: "1.5px solid #BFDBFE" }}>
-          <Info size={17} style={{ color: "#2563EB", flexShrink: 0, marginTop: 1 }} />
-          <p style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.8125rem", color: "#1E40AF", lineHeight: 1.55 }}>
-            {m.catalog.retailDisclaimer}
-          </p>
-        </div>
-
         <button
-          className="lg:hidden flex items-center gap-2 mb-4 text-sm font-semibold text-slate-700 border border-slate-200 rounded-lg px-3 py-2 bg-white"
+          className="lg:hidden flex items-center gap-2 mb-4 text-sm font-semibold border rounded-xl px-4 py-2.5 bg-white"
           onClick={() => setShowFilters((o) => !o)}
-          style={{ fontFamily: "system-ui,sans-serif" }}
+          style={{ fontFamily: "system-ui,sans-serif", color: "#374151", borderColor: "#E5E7EB" }}
         >
-          <Filter size={15} /> {m.catalogFilters.sidebarTitle}
+          <Filter size={15} style={{ color: "#F97316" }} /> {m.catalogFilters.sidebarTitle}
         </button>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Sidebar */}
-          <aside className={`${showFilters ? "block" : "hidden"} lg:block w-full lg:w-64 flex-shrink-0 bg-white border border-slate-200 rounded-2xl p-4 space-y-6`} style={{ alignSelf: "flex-start" }}>
-            <div className="flex items-center gap-2 mb-1">
-              <Filter size={16} className="text-slate-600" />
-              <h2 className="text-sm font-semibold text-slate-800" style={{ fontFamily: "system-ui,sans-serif" }}>
+          <aside className={`${showFilters ? "block" : "hidden"} lg:block w-full lg:w-60 flex-shrink-0 rounded-2xl overflow-hidden`}
+            style={{ alignSelf: "flex-start", background: "white", border: "1px solid #F0F2F5", boxShadow: "0 1px 6px rgba(0,0,0,.05)" }}>
+
+            {/* Sidebar header */}
+            <div className="flex items-center gap-2 px-4 py-3" style={{ borderBottom: "1px solid #F0F2F5", background: "#F8FAFC" }}>
+              <Filter size={14} style={{ color: "#F97316" }} />
+              <h2 className="text-xs font-bold uppercase tracking-widest"
+                style={{ fontFamily: "system-ui,sans-serif", color: "#374151", letterSpacing: "0.1em" }}>
                 {m.catalogFilters.sidebarTitle}
               </h2>
             </div>
 
-            <div className="space-y-2">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ fontFamily: "system-ui,sans-serif" }}>
-                {m.catalogFilters.subjectsTitle}
-              </p>
-              {(["math", "physics", "languages"] as const).map((code) => {
-                const label = m.catalogFilters.subjects[code];
-                const checked = subjects.includes(code);
-                return (
-                  <label key={code} className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer select-none" style={{ fontFamily: "system-ui,sans-serif" }}>
-                    <input type="checkbox" className="h-4 w-4 rounded border-slate-300 text-blue-600" checked={checked} onChange={() => toggleSubject(code)} />
-                    <span>{label}</span>
-                  </label>
-                );
-              })}
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ fontFamily: "system-ui,sans-serif" }}>
-                {m.catalogFilters.classesTitle}
-              </p>
-              <div className="grid grid-cols-4 gap-1.5">
-                {Array.from({ length: 11 }).map((_, idx) => {
-                  const value = idx + 1;
-                  const active = classes.includes(value);
+            <div className="p-4 space-y-5">
+              <div className="space-y-2">
+                <p className="text-xs font-bold uppercase tracking-wide"
+                  style={{ fontFamily: "system-ui,sans-serif", color: "#9CA3AF", letterSpacing: "0.1em" }}>
+                  {m.catalogFilters.subjectsTitle}
+                </p>
+                {(["math", "physics", "languages"] as const).map((code) => {
+                  const label = m.catalogFilters.subjects[code];
+                  const checked = subjects.includes(code);
                   return (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() => toggleClass(value)}
-                      className="text-xs rounded-lg py-1"
-                      style={{ fontFamily: "system-ui,sans-serif", background: active ? "#F97316" : "#F1F5F9", color: active ? "#fff" : "#1F2933" }}
-                    >
-                      {value}
-                    </button>
+                    <label key={code} className="flex items-center gap-2.5 cursor-pointer select-none"
+                      style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.875rem", color: checked ? "#F97316" : "#374151" }}>
+                      <input type="checkbox" checked={checked} onChange={() => toggleSubject(code)}
+                        style={{ accentColor: "#F97316", width: 15, height: 15, cursor: "pointer" }} />
+                      <span style={{ fontWeight: checked ? 600 : 400 }}>{label}</span>
+                    </label>
                   );
                 })}
               </div>
-            </div>
 
-            <button
-              type="button"
-              onClick={resetFilters}
-              className="w-full mt-2 text-xs font-semibold rounded-md py-2 border border-slate-200 text-slate-600 hover:bg-slate-50"
-              style={{ fontFamily: "system-ui,sans-serif" }}
-            >
-              {m.catalogFilters.reset}
-            </button>
+              <div className="space-y-2">
+                <p className="text-xs font-bold uppercase tracking-wide"
+                  style={{ fontFamily: "system-ui,sans-serif", color: "#9CA3AF", letterSpacing: "0.1em" }}>
+                  {m.catalogFilters.classesTitle}
+                </p>
+                <div className="grid grid-cols-4 gap-1.5">
+                  {Array.from({ length: 11 }).map((_, idx) => {
+                    const value = idx + 1;
+                    const active = classes.includes(value);
+                    return (
+                      <button key={value} type="button" onClick={() => toggleClass(value)}
+                        className="text-xs rounded-lg py-1.5 font-semibold transition-all"
+                        style={{
+                          fontFamily: "system-ui,sans-serif",
+                          background: active ? "#F97316" : "#F8FAFC",
+                          color: active ? "#fff" : "#374151",
+                          border: active ? "1px solid #EA580C" : "1px solid #F0F2F5",
+                        }}>
+                        {value}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <button type="button" onClick={resetFilters}
+                className="w-full text-xs font-semibold rounded-xl py-2.5 transition-all"
+                style={{
+                  fontFamily: "system-ui,sans-serif", background: "#FFF7ED",
+                  color: "#F97316", border: "1px solid #FED7AA",
+                }}>
+                {m.catalogFilters.reset}
+              </button>
+            </div>
           </aside>
 
           {/* Content */}
           <section className="flex-1 space-y-4">
-            <div className="flex flex-col md:flex-row md:items-center gap-3 justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-1" style={{ fontFamily: "system-ui,sans-serif" }}>
-                  {m.catalog.eyebrow}
-                </p>
-                <h1 className="text-xl md:text-2xl font-semibold text-slate-900" style={{ fontFamily: "'Georgia',serif" }}>
-                  {m.catalog.title}
-                </h1>
+            <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+
+              {/* Search */}
+              <div className="relative flex-1 min-w-[200px] max-w-sm">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: "#9CA3AF" }} />
+                <input
+                  type="text" value={search} onChange={(e) => setSearch(e.target.value)}
+                  placeholder={m.catalogFilters.searchPlaceholder}
+                  className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl bg-white text-gray-900"
+                  style={{
+                    fontFamily: "system-ui,sans-serif", border: "1.5px solid #E5E7EB",
+                    outline: "none", transition: "border-color 0.15s",
+                  }}
+                  onFocus={e => { e.target.style.borderColor = "#F97316"; }}
+                  onBlur={e => { e.target.style.borderColor = "#E5E7EB"; }}
+                />
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center w-full sm:w-auto">
-                {/* Search */}
-                <div className="relative flex-1 min-w-[200px]">
-                  <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-                  <input
-                    type="text"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder={m.catalogFilters.searchPlaceholder}
-                    className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                    style={{ fontFamily: "system-ui,sans-serif" }}
-                  />
-                </div>
-
-                {/* Sort + Per-page */}
-                <div className="flex items-center gap-2">
-                  <span className="hidden sm:inline text-xs text-slate-500" style={{ fontFamily: "system-ui,sans-serif" }}>
-                    {m.catalogFilters.sortLabel}:
-                  </span>
-                  <div className="relative">
-                    <select
-                      value={sort}
-                      onChange={(e) => setSort(e.target.value as SortKey)}
-                      className="appearance-none pl-3 pr-7 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                      style={{ fontFamily: "system-ui,sans-serif", color: "#111827" }}
-                    >
-                      <option value="cheap">{m.catalogFilters.sortCheapFirst}</option>
-                      <option value="expensive">{m.catalogFilters.sortExpensiveFirst}</option>
-                      <option value="new">{m.catalogFilters.sortNew}</option>
+              {/* Sort + Per-page */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="hidden sm:inline text-xs font-medium" style={{ fontFamily: "system-ui,sans-serif", color: "#9CA3AF" }}>
+                  {m.catalogFilters.sortLabel}:
+                </span>
+                {[
+                  { val: sort, setter: (v: string) => setSort(v as SortKey), opts: [
+                    { value: "cheap", label: m.catalogFilters.sortCheapFirst },
+                    { value: "expensive", label: m.catalogFilters.sortExpensiveFirst },
+                    { value: "new", label: m.catalogFilters.sortNew },
+                  ]},
+                  { val: String(pageSize), setter: (v: string) => setPageSize(Number(v)), opts: [10, 20, 50, 100].map(n => ({ value: String(n), label: `${n} / стр.` })) },
+                ].map((sel, si) => (
+                  <div key={si} className="relative">
+                    <select value={sel.val} onChange={(e) => sel.setter(e.target.value)}
+                      className="appearance-none pl-3 pr-7 py-2.5 text-xs rounded-xl bg-white"
+                      style={{
+                        fontFamily: "system-ui,sans-serif", color: "#111827",
+                        border: "1.5px solid #E5E7EB", outline: "none",
+                      }}>
+                      {sel.opts.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                     </select>
-                    <ChevronDown className="pointer-events-none absolute right-2 top-2.5 h-3.5 w-3.5 text-slate-400" />
+                    <ChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5" style={{ color: "#9CA3AF" }} />
                   </div>
-                  <div className="relative">
-                    <select
-                      value={pageSize}
-                      onChange={(e) => setPageSize(Number(e.target.value))}
-                      className="appearance-none pl-3 pr-7 py-2 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                      style={{ fontFamily: "system-ui,sans-serif", color: "#111827" }}
-                    >
-                      {[10, 20, 50, 100].map((n) => (
-                        <option key={n} value={n}>{n} / стр.</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="pointer-events-none absolute right-2 top-2.5 h-3.5 w-3.5 text-slate-400" />
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 

@@ -53,49 +53,67 @@ function ContactsInner() {
     },
   ];
 
+  const inputStyle: React.CSSProperties = {
+    fontFamily: "system-ui,sans-serif",
+    color: "#111827",
+    width: "100%",
+    padding: "10px 14px",
+    fontSize: "0.9rem",
+    borderRadius: 10,
+    border: "1.5px solid #E5E7EB",
+    outline: "none",
+    background: "#FAFAFA",
+    transition: "border-color 0.15s, box-shadow 0.15s",
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen" style={{ background: "#F8FAFC" }}>
       {/* HERO */}
       <section
         className="relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg,#001A33 0%,#002D55 55%,#001A33 100%)", paddingTop: "4rem", paddingBottom: "4rem" }}
+        style={{ background: "linear-gradient(135deg,#001220 0%,#002244 60%,#001A33 100%)", paddingTop: "4.5rem", paddingBottom: "4.5rem" }}
       >
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -right-16 -top-16 w-72 h-72 rounded-full opacity-10" style={{ background: "white" }} />
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -right-16 -top-16 w-80 h-80 rounded-full opacity-[0.06]" style={{ background: "white" }} />
+          <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg,transparent,rgba(249,115,22,.5),transparent)" }} />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-5"
+            style={{ background: "rgba(249,115,22,.18)", color: "#FCA668", border: "1px solid rgba(249,115,22,.3)", fontFamily: "system-ui,sans-serif" }}>
+            <MapPin size={12} /> {m.brand.megaHub} {m.brand.education}
+          </div>
           <h1
             style={{
               fontFamily: "'Georgia',serif",
               fontSize: "clamp(1.75rem,4vw,2.75rem)",
               fontWeight: 700,
               color: "white",
-              marginBottom: "0.5rem",
+              marginBottom: "0.6rem",
+              lineHeight: 1.2,
             }}
           >
             {m.contacts.title}
           </h1>
-          <p style={{ fontFamily: "system-ui,sans-serif", color: "rgba(255,255,255,.78)", fontSize: "1rem" }}>
-            {m.brand.megaHub} {m.brand.education} — {m.contacts.address}
+          <p style={{ fontFamily: "system-ui,sans-serif", color: "rgba(255,255,255,.65)", fontSize: "1rem", maxWidth: 500 }}>
+            {m.contacts.address}
           </p>
         </div>
       </section>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
 
           {/* Contact Info */}
           <div>
-            <h2
-              className="text-xl font-semibold text-slate-900 mb-6"
-              style={{ fontFamily: "'Georgia',serif" }}
-            >
+            <p className="text-xs font-bold uppercase tracking-widest mb-5"
+              style={{ fontFamily: "system-ui,sans-serif", color: "#F97316", letterSpacing: "0.12em" }}>
               {m.contacts.title}
-            </h2>
+            </p>
 
-            <div className="space-y-5">
+            <div className="space-y-4">
               {contactRows.map(({ icon: Icon, label, value, href, accent, bg }) => (
-                <div key={label} className="flex items-start gap-4">
+                <div key={label} className="flex items-center gap-4 p-4 rounded-2xl"
+                  style={{ background: "white", border: "1px solid #F0F2F5", boxShadow: "0 1px 4px rgba(0,0,0,.04)" }}>
                   <div
                     className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
                     style={{ background: bg }}
@@ -115,24 +133,17 @@ function ContactsInner() {
                         style={{
                           fontFamily: "system-ui,sans-serif",
                           fontSize: "0.9375rem",
-                          color: accent,
+                          color: "#111827",
                           textDecoration: "none",
-                          fontWeight: 500,
+                          fontWeight: 600,
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.textDecoration = "underline")}
-                        onMouseLeave={(e) => (e.currentTarget.style.textDecoration = "none")}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = accent)}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = "#111827")}
                       >
                         {value}
                       </a>
                     ) : (
-                      <p
-                        style={{
-                          fontFamily: "system-ui,sans-serif",
-                          fontSize: "0.9375rem",
-                          color: "#111827",
-                          fontWeight: 500,
-                        }}
-                      >
+                      <p style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.9375rem", color: "#111827", fontWeight: 600 }}>
                         {value}
                       </p>
                     )}
@@ -142,44 +153,41 @@ function ContactsInner() {
             </div>
 
             {/* Working hours */}
-            <div
-              className="mt-8 rounded-xl p-5"
-              style={{ background: "white", border: "1px solid #E5E7EB" }}
-            >
-              <p
-                className="text-sm font-semibold text-slate-700 mb-3"
-                style={{ fontFamily: "system-ui,sans-serif" }}
-              >
-                {m.contacts.workingHoursTitle}
-              </p>
-              {m.contacts.schedule.map(({ day, hours }) => (
-                <div key={day} className="flex justify-between py-1.5" style={{ borderBottom: "1px solid #F9FAFB" }}>
-                  <span style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.875rem", color: "#374151" }}>
-                    {day}
-                  </span>
-                  <span
-                    style={{
+            <div className="mt-6 rounded-2xl overflow-hidden"
+              style={{ background: "white", border: "1px solid #F0F2F5", boxShadow: "0 1px 4px rgba(0,0,0,.04)" }}>
+              <div className="px-5 py-3" style={{ background: "#F8FAFC", borderBottom: "1px solid #F0F2F5" }}>
+                <p className="text-xs font-bold uppercase tracking-widest"
+                  style={{ fontFamily: "system-ui,sans-serif", color: "#6B7280", letterSpacing: "0.1em" }}>
+                  {m.contacts.workingHoursTitle}
+                </p>
+              </div>
+              <div className="px-5 py-2">
+                {m.contacts.schedule.map(({ day, hours }, i) => (
+                  <div key={day} className="flex justify-between py-2.5"
+                    style={{ borderBottom: i < m.contacts.schedule.length - 1 ? "1px solid #F3F4F6" : "none" }}>
+                    <span style={{ fontFamily: "system-ui,sans-serif", fontSize: "0.875rem", color: "#374151" }}>
+                      {day}
+                    </span>
+                    <span style={{
                       fontFamily: "system-ui,sans-serif",
                       fontSize: "0.875rem",
-                      fontWeight: 500,
+                      fontWeight: 600,
                       color: day === m.contacts.schedule[2].day ? "#9CA3AF" : "#111827",
-                    }}
-                  >
-                    {hours}
-                  </span>
-                </div>
-              ))}
+                    }}>
+                      {hours}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Contact Form */}
           <div>
-            <h2
-              className="text-xl font-semibold text-slate-900 mb-6"
-              style={{ fontFamily: "'Georgia',serif" }}
-            >
+            <p className="text-xs font-bold uppercase tracking-widest mb-5"
+              style={{ fontFamily: "system-ui,sans-serif", color: "#F97316", letterSpacing: "0.12em" }}>
               {m.contacts.formTitle}
-            </h2>
+            </p>
 
             {toast && (
               <div
@@ -200,56 +208,54 @@ function ContactsInner() {
 
             <form
               onSubmit={onSubmit}
-              className="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm space-y-4"
+              className="rounded-2xl p-6 md:p-8 space-y-4"
+              style={{ background: "white", border: "1px solid #F0F2F5", boxShadow: "0 2px 12px rgba(0,0,0,.05)" }}
             >
               <div>
-                <label
-                  className="block text-xs font-semibold text-slate-600 mb-1"
-                  style={{ fontFamily: "system-ui,sans-serif" }}
-                >
+                <label className="block text-xs font-semibold mb-1.5"
+                  style={{ fontFamily: "system-ui,sans-serif", color: "#374151" }}>
                   {m.contacts.form.name}
                 </label>
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3 py-2.5 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                  style={{ fontFamily: "system-ui,sans-serif", color: "#111827" }}
+                  style={inputStyle}
+                  onFocus={e => { e.target.style.borderColor = "#F97316"; e.target.style.boxShadow = "0 0 0 3px rgba(249,115,22,.12)"; e.target.style.background = "white"; }}
+                  onBlur={e => { e.target.style.borderColor = "#E5E7EB"; e.target.style.boxShadow = "none"; }}
                   autoComplete="name"
                   required
                 />
               </div>
 
               <div>
-                <label
-                  className="block text-xs font-semibold text-slate-600 mb-1"
-                  style={{ fontFamily: "system-ui,sans-serif" }}
-                >
+                <label className="block text-xs font-semibold mb-1.5"
+                  style={{ fontFamily: "system-ui,sans-serif", color: "#374151" }}>
                   {m.contacts.form.email}
                 </label>
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
-                  className="w-full px-3 py-2.5 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                  style={{ fontFamily: "system-ui,sans-serif", color: "#111827" }}
+                  style={inputStyle}
+                  onFocus={e => { e.target.style.borderColor = "#F97316"; e.target.style.boxShadow = "0 0 0 3px rgba(249,115,22,.12)"; e.target.style.background = "white"; }}
+                  onBlur={e => { e.target.style.borderColor = "#E5E7EB"; e.target.style.boxShadow = "none"; }}
                   autoComplete="email"
                   required
                 />
               </div>
 
               <div>
-                <label
-                  className="block text-xs font-semibold text-slate-600 mb-1"
-                  style={{ fontFamily: "system-ui,sans-serif" }}
-                >
+                <label className="block text-xs font-semibold mb-1.5"
+                  style={{ fontFamily: "system-ui,sans-serif", color: "#374151" }}>
                   {m.contacts.form.message}
                 </label>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   rows={5}
-                  className="w-full px-3 py-2.5 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 resize-none"
-                  style={{ fontFamily: "system-ui,sans-serif", color: "#111827" }}
+                  style={{ ...inputStyle, resize: "none" }}
+                  onFocus={e => { e.target.style.borderColor = "#F97316"; e.target.style.boxShadow = "0 0 0 3px rgba(249,115,22,.12)"; e.target.style.background = "white"; }}
+                  onBlur={e => { e.target.style.borderColor = "#E5E7EB"; e.target.style.boxShadow = "none"; }}
                   required
                 />
               </div>
@@ -257,14 +263,18 @@ function ContactsInner() {
               <button
                 type="submit"
                 disabled={!canSubmit || submitting}
-                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-semibold text-white"
+                className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-white"
                 style={{
-                  background: !canSubmit || submitting ? "#94A3B8" : "#F97316",
+                  background: !canSubmit || submitting ? "#CBD5E1" : "linear-gradient(135deg,#F97316,#EA580C)",
                   fontFamily: "system-ui,sans-serif",
                   fontSize: "0.9375rem",
                   border: "none",
                   cursor: !canSubmit || submitting ? "not-allowed" : "pointer",
+                  boxShadow: !canSubmit || submitting ? "none" : "0 4px 14px rgba(249,115,22,.35)",
+                  transition: "all 0.2s",
                 }}
+                onMouseEnter={e => { if (canSubmit && !submitting) e.currentTarget.style.boxShadow = "0 6px 20px rgba(249,115,22,.5)"; }}
+                onMouseLeave={e => { if (canSubmit && !submitting) e.currentTarget.style.boxShadow = "0 4px 14px rgba(249,115,22,.35)"; }}
               >
                 <Send size={15} />
                 {submitting ? m.contacts.form.submitting : m.contacts.form.submit}
