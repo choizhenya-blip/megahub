@@ -1,10 +1,18 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Eye, EyeOff, LogOut, KeyRound, ChevronDown, X, UserCircle2, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Eye, EyeOff, LogOut, KeyRound, ChevronDown, X, UserCircle2, CheckCircle2, AlertCircle, Loader2, Package, Users, Languages, Building2 } from "lucide-react";
 import { signOut, changePassword } from "../login/actions";
 
 const IDLE_MS = 15 * 60 * 1000; // 15 minutes — must match middleware
+
+const NAV_ITEMS = [
+  { href: "/admin", label: "Каталог", icon: Package, exact: true, superOnly: false },
+  { href: "/admin/users", label: "Пользователи", icon: Users, superOnly: true },
+  { href: "/admin/translations", label: "Переводы", icon: Languages, superOnly: false },
+  { href: "/admin/b2b", label: "B2B-заявки", icon: Building2, superOnly: false },
+];
 
 /* ─── Password change modal ─────────────────────────────── */
 function PasswordModal({ onClose }: { onClose: () => void }) {
@@ -212,7 +220,7 @@ function IdleWarning({ secondsLeft, onExtend }: { secondsLeft: number; onExtend:
 }
 
 /* ─── Main header ────────────────────────────────────────── */
-export function AdminHeader() {
+export function AdminHeader({ isSuperAdmin = false }: { isSuperAdmin?: boolean }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [idleWarning, setIdleWarning] = useState(false);
@@ -278,38 +286,71 @@ export function AdminHeader() {
     // Touching the page triggers activity listeners which will reset the idle timer
   }
 
+  const pathname = usePathname();
+
+  const visibleNav = NAV_ITEMS.filter((item) => !item.superOnly || isSuperAdmin);
+
   return (
     <>
       {/* ── Header bar ─────────────────────────────────────── */}
       <header style={{
         background: "#001A33", color: "#fff",
-        padding: "0 24px",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        height: 56, flexShrink: 0, position: "sticky", top: 0, zIndex: 100,
-        boxShadow: "0 1px 8px rgba(0,0,0,0.25)",
+        flexShrink: 0, position: "sticky", top: 0, zIndex: 100,
+        boxShadow: "0 2px 12px rgba(0,0,0,0.3)",
       }}>
-        {/* Brand */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{
-            width: 28, height: 28, borderRadius: 7, background: "#F97316",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontWeight: 900, fontSize: 13, color: "#fff", letterSpacing: "-0.5px",
-          }}>
-            MH
-          </div>
-          <span style={{ fontWeight: 700, fontSize: 15, letterSpacing: "-0.2px" }}>
-            MegaHub
-          </span>
-          <span style={{
-            fontSize: 11, color: "#94A3B8", borderLeft: "1px solid #334155",
-            paddingLeft: 10, marginLeft: 2,
-          }}>
-            Панель управления
-          </span>
-        </div>
+        <div style={{
+          maxWidth: 1240, margin: "0 auto", padding: "0 28px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          height: 60,
+        }}>
+          {/* Brand + Nav */}
+          <div style={{ display: "flex", alignItems: "center", gap: 0, height: "100%" }}>
+            <a href="/admin" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", marginRight: 24 }}>
+              <div style={{
+                width: 34, height: 34, borderRadius: 9, background: "#F97316",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                boxShadow: "0 2px 8px rgba(249,115,22,0.4)",
+              }}>
+                <svg viewBox="0 0 20 20" fill="none" width={18} height={18}>
+                  <rect x="3" y="4" width="6" height="12" rx="1" fill="white" opacity="0.9" />
+                  <rect x="11" y="4" width="6" height="12" rx="1" fill="white" opacity="0.7" />
+                </svg>
+              </div>
+              <div>
+                <div style={{ fontSize: 9, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.1em", lineHeight: 1 }}>Панель управления</div>
+                <div style={{ fontWeight: 700, fontSize: 13, color: "#F1F5F9", lineHeight: 1.4 }}>Администратор</div>
+              </div>
+            </a>
 
-        {/* User menu */}
-        <div ref={dropdownRef} style={{ position: "relative" }}>
+            {/* Separator */}
+            <div style={{ width: 1, height: 28, background: "#1E3A5F", marginRight: 20 }} />
+
+            <nav style={{ display: "flex", gap: 0, height: "100%", alignItems: "stretch" }}>
+              {visibleNav.map(({ href, label, icon: Icon, exact }) => {
+                const active = exact ? pathname === href : pathname.startsWith(href);
+                return (
+                  <a key={href} href={href} style={{
+                    display: "flex", alignItems: "center", gap: 6,
+                    padding: "0 14px",
+                    position: "relative",
+                    borderBottom: active ? "2px solid #F97316" : "2px solid transparent",
+                    color: active ? "#F97316" : "#94A3B8",
+                    textDecoration: "none", fontSize: 13, fontWeight: active ? 700 : 500,
+                    transition: "color 0.15s",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => { if (!active) e.currentTarget.style.color = "#E2E8F0"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = active ? "#F97316" : "#94A3B8"; }}
+                  >
+                    <Icon size={14} /> {label}
+                  </a>
+                );
+              })}
+            </nav>
+          </div>
+
+          {/* User menu */}
+          <div ref={dropdownRef} style={{ position: "relative" }}>
           <button
             onClick={() => setDropdownOpen((o) => !o)}
             style={{
@@ -384,6 +425,7 @@ export function AdminHeader() {
               </form>
             </div>
           )}
+          </div>
         </div>
       </header>
 

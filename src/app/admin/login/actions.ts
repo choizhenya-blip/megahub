@@ -29,6 +29,17 @@ export async function signIn(formData: FormData) {
     maxAge: 16 * 60,
   });
 
+  // Super admin: separate password grants access to Users section
+  const superAdminPwd = process.env.SUPER_ADMIN_PASSWORD;
+  if (superAdminPwd && password === superAdminPwd) {
+    cookieStore.set("admin_super", "1", {
+      ...COOKIE_OPTS,
+      maxAge: 60 * 60 * 24 * 2,
+    });
+  } else {
+    cookieStore.delete("admin_super");
+  }
+
   redirect("/admin");
 }
 
@@ -36,6 +47,7 @@ export async function signOut() {
   const cookieStore = await cookies();
   cookieStore.delete("admin_session");
   cookieStore.delete("admin_last_active");
+  cookieStore.delete("admin_super");
   redirect("/admin/login");
 }
 

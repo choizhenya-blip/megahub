@@ -12,7 +12,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "MegaHub Education — учебная литература для школ Казахстана",
+  title: "Учебная литература для школ Казахстана",
   description:
     "Официальный дистрибьютор МОН РК. Прямые поставки учебников для школ, акиматов и родителей.",
   icons: {

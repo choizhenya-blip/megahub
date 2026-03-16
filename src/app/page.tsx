@@ -269,7 +269,7 @@ function BookCard({ book, onAdd }: { book: any; onAdd: (id: string) => void }) {
 }
 
 // ── Main ─────────────────────────────────────────────────────
-function MegaHubLandingInner() {
+function LandingInner() {
   const { lang, m } = useI18n();
   const { add } = useCartStore();
 
@@ -583,5 +583,5 @@ function MegaHubLandingInner() {
 }
 
 export default function Page() {
-  return <MegaHubLandingInner />;
+  return <LandingInner />;
 }

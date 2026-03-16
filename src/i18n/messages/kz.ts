@@ -1,5 +1,5 @@
 export const kz = {
-  brand: { megaHub: "MegaHub", education: "Education" },
+  brand: { megaHub: "", education: "" },
   nav: {
     home: "Басты бет",
     catalog: "Каталог",
@@ -14,7 +14,7 @@ export const kz = {
     pathCard2Title: "Мен ұйым өкіліміз",
     pathCard2Sub: "Мектептерге, дүкендер мен мекемелерге көтерме жеткізу. Жеке шарттар мен қолдау.",
     pathCard2Cta: "Өтінім қалдыру",
-    statsTitle: "MegaHub сандарда",
+    statsTitle: "Біздің көрсеткіштер",
     statsItems: [
       { value: "100+", label: "ҚР бойынша серіктестер" },
       { value: "5 000+", label: "Оқулық атауы" },
@@ -172,7 +172,7 @@ export const kz = {
       error: "Жіберу кезінде қате. Қайталап көріңіз.",
     },
   },
-  footer: { copyright: "© 2024 MegaHub Education. Алматы, Қазақстан." },
+  footer: { copyright: "© 2024 Алматы, Қазақстан." },
   errors: {
     supabaseTitle: "Supabase қолжетімсіз (CORS)",
     supabaseSubtitle: "Демо-деректер көрсетілді. Нақты браузерде деректер БҚ-дан жүктеледі.",
@@ -190,7 +190,7 @@ export const kz = {
   },
   language: { label: "Тіл", ru: "RU", kz: "KZ", en: "EN" },
   forAuthors: {
-    heroTitle: "MegaHub Education авторы болыңыз",
+    heroTitle: "Автор болыңыз",
     heroSubtitle: "Оқу материалдарын жариялап, адал монетизацияға қол жеткізіңіз және Қазақстан бойынша мыңдаған мектепке шығыңыз.",
     heroCta: "Өтінім қалдыру",
     perksTitle: "Авторларға арналған артықшылықтар",

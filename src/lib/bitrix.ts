@@ -31,7 +31,7 @@ export function buildBitrixLead(order: BitrixOrderPayload) {
 
   return {
     fields: {
-      TITLE: `Заказ MegaHub: ${order.name}`,
+      TITLE: `Заказ: ${order.name}`,
       NAME: order.name,
       PHONE: [{ VALUE: order.phone, VALUE_TYPE: "WORK" }],
       COMMENTS: comments,

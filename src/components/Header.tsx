@@ -29,6 +29,12 @@ export function Header() {
   const [isB2G, setIsB2G] = useState(false);
   const [orderSent, setOrderSent] = useState(false);
 
+  // Hide public header on admin and B2B portal pages (they have their own headers)
+  const isHidden =
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/b2b/catalog") ||
+    pathname.startsWith("/b2b/quotes");
+
   // Checkout form step
   const [checkoutStep, setCheckoutStep] = useState(false);
   const [checkoutName, setCheckoutName] = useState("");
@@ -110,10 +116,10 @@ export function Header() {
         body: JSON.stringify(orderData),
       });
     } catch (err) {
-      console.error("[MegaHub] Order submit error:", err);
+      console.error("[Order] submit error:", err);
     }
 
-    console.log("[MegaHub] 📦 Order submitted:", orderData);
+    console.log("[Order] 📦 submitted:", orderData);
 
     clear();
     setMoreComments({});
@@ -131,7 +137,6 @@ export function Header() {
     if (!items.length) return;
     const lines = [
       "Коммерческое предложение",
-      "MegaHub Education",
       "",
       ...items.map(
         (i) =>
@@ -149,7 +154,7 @@ export function Header() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "kp-megahub.txt";
+    a.download = "kp.txt";
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -158,6 +163,8 @@ export function Header() {
 
   const canSubmitCheckout =
     checkoutName.trim().length >= 2 && checkoutPhone.trim().length >= 6 && consentChecked;
+
+  if (isHidden) return null;
 
   return (
     <>
@@ -179,7 +186,7 @@ export function Header() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/logo.svg"
-                alt="MegaHub Education"
+                alt="Логотип"
                 style={{ height: 44, width: "auto" }}
               />
             </a>

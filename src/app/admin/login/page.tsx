@@ -33,7 +33,7 @@ export default async function AdminLoginPage({
               className="text-xs font-semibold uppercase tracking-widest"
               style={{ fontFamily: "system-ui,sans-serif", color: "#9CA3AF", lineHeight: 1 }}
             >
-              MegaHub Education
+              Администрирование
             </p>
             <p
               className="text-base font-bold"

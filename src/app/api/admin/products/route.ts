@@ -77,7 +77,7 @@ export async function PATCH(req: NextRequest) {
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
 
   const allowed = [
-    "stock_count", "is_active", "description", "cover_image_url",
+    "stock_count", "is_active", "is_b2b_active", "description", "cover_image_url",
     "price_b2c", "price_b2g",
     "isbn", "title", "title_ru", "title_kz", "title_en", "author", "subject", "class_level",
     "description_ru", "description_kz", "description_en", "images",

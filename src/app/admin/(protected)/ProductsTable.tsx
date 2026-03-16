@@ -22,6 +22,7 @@ interface Book {
   price_b2g?: number | null;
   stock_count: number;
   is_active: boolean;
+  is_b2b_active: boolean;
   cover_image_url?: string | null;
   description?: string | null;
   description_ru?: string | null;
@@ -484,9 +485,10 @@ function FilterBar({
   };
 
   return (
-    <div style={{ marginBottom: 16, background: "#fff", border: "1.5px solid #E5E7EB", borderRadius: 14, padding: "14px 16px" }}>
+    <div style={{ marginBottom: 14, background: "#fff", border: "1.5px solid #E5E7EB", borderRadius: 14, padding: "12px 16px", display: "flex", flexDirection: "column", gap: 10 }}>
+      {/* Row 1: search + subject + sort + controls */}
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-        <SlidersHorizontal size={14} color="#6B7280" />
+        <SlidersHorizontal size={13} color="#9CA3AF" />
 
         {/* Search */}
         <div style={{ position: "relative", flex: "1 1 200px" }}>
@@ -507,8 +509,7 @@ function FilterBar({
 
         {/* Subject */}
         <select
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
+          value={subject} onChange={(e) => setSubject(e.target.value)}
           style={{ ...inp, cursor: "pointer" }}
           onFocus={(e) => (e.currentTarget.style.borderColor = "#F97316")}
           onBlur={(e) => (e.currentTarget.style.borderColor = "#E5E7EB")}
@@ -517,32 +518,9 @@ function FilterBar({
           {subjects.map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
 
-        {/* Class buttons */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-          <span style={{ fontSize: 10, fontWeight: 600, color: "#9CA3AF", textTransform: "uppercase", letterSpacing: "0.05em" }}>Класс</span>
-          <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-          {[1,2,3,4,5,6,7,8,9,10,11].map((c) => (
-            <button
-              key={c}
-              onClick={() => setClassLevel(classLevel === c ? null : c)}
-              style={{
-                width: 28, height: 28, borderRadius: 7, border: "1.5px solid",
-                borderColor: classLevel === c ? "#F97316" : "#E5E7EB",
-                background: classLevel === c ? "#FFF7ED" : "#F9FAFB",
-                color: classLevel === c ? "#F97316" : "#6B7280",
-                fontSize: 11, fontWeight: 700, cursor: "pointer",
-              }}
-            >
-              {c}
-            </button>
-          ))}
-          </div>
-        </div>
-
         {/* Sort */}
         <select
-          value={sortKey}
-          onChange={(e) => setSortKey(e.target.value as SortKey)}
+          value={sortKey} onChange={(e) => setSortKey(e.target.value as SortKey)}
           style={{ ...inp, cursor: "pointer" }}
           onFocus={(e) => (e.currentTarget.style.borderColor = "#F97316")}
           onBlur={(e) => (e.currentTarget.style.borderColor = "#E5E7EB")}
@@ -554,31 +532,57 @@ function FilterBar({
           <option value="stock_desc">Остаток ↓</option>
         </select>
 
-        {/* Clear + per-page + count */}
+        {/* Сбросить */}
         {hasFilter && (
           <button
             onClick={() => { setSearch(""); setSubject(""); setClassLevel(null); }}
-            style={{ fontSize: 12, color: "#F97316", background: "none", border: "none", cursor: "pointer", fontWeight: 600, padding: "4px 6px", borderRadius: 6 }}
+            style={{
+              display: "flex", alignItems: "center", gap: 5,
+              padding: "6px 11px", borderRadius: 7,
+              border: "1px solid #FECACA", background: "#FEF2F2",
+              color: "#DC2626", fontSize: 12, fontWeight: 600, cursor: "pointer",
+              whiteSpace: "nowrap",
+            }}
           >
-            Сбросить
+            <X size={11} /> Сбросить
           </button>
         )}
+
+        {/* Per-page + count */}
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
           <select
-            value={pageSize}
-            onChange={(e) => onPageSizeChange(Number(e.target.value))}
+            value={pageSize} onChange={(e) => onPageSizeChange(Number(e.target.value))}
             style={{ ...inp, cursor: "pointer", fontSize: 12, padding: "5px 8px" }}
             onFocus={(e) => (e.currentTarget.style.borderColor = "#F97316")}
             onBlur={(e) => (e.currentTarget.style.borderColor = "#E5E7EB")}
           >
-            {[10, 20, 50, 100].map((n) => (
-              <option key={n} value={n}>{n} / стр.</option>
-            ))}
+            {[10, 20, 50, 100].map((n) => <option key={n} value={n}>{n} / стр.</option>)}
           </select>
           <span style={{ fontSize: 12, color: "#9CA3AF", whiteSpace: "nowrap" }}>
             {count} из {total}
           </span>
         </div>
+      </div>
+
+      {/* Row 2: class filter */}
+      <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
+        <span style={{ fontSize: 11, fontWeight: 700, color: "#9CA3AF", textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}>Класс</span>
+        <div style={{ width: 1, height: 14, background: "#E5E7EB" }} />
+        {[1,2,3,4,5,6,7,8,9,10,11].map((c) => (
+          <button
+            key={c}
+            onClick={() => setClassLevel(classLevel === c ? null : c)}
+            style={{
+              width: 28, height: 28, borderRadius: 7, border: "1.5px solid",
+              borderColor: classLevel === c ? "#F97316" : "#E5E7EB",
+              background: classLevel === c ? "#FFF7ED" : "#F9FAFB",
+              color: classLevel === c ? "#C2410C" : "#6B7280",
+              fontSize: 11, fontWeight: 700, cursor: "pointer", transition: "all 0.12s",
+            }}
+          >
+            {c}
+          </button>
+        ))}
       </div>
     </div>
   );
@@ -1228,6 +1232,13 @@ function ProductsTab({
     catch { updateLocal(book.id, { is_active: book.is_active }); alert("Ошибка сохранения"); }
   }
 
+  async function handleToggleB2bActive(book: Book) {
+    const next = !book.is_b2b_active;
+    updateLocal(book.id, { is_b2b_active: next });
+    try { await patchBook(book.id, { is_b2b_active: next }); }
+    catch { updateLocal(book.id, { is_b2b_active: book.is_b2b_active }); alert("Ошибка сохранения"); }
+  }
+
   async function handleNumSave(book: Book, field: keyof Book, n: number) {
     const prev = book[field] as number;
     updateLocal(book.id, { [field]: n });
@@ -1283,10 +1294,14 @@ function ProductsTab({
 
       {books.length === 0 ? (
         <div style={{
-          background: "#fff", borderRadius: 16, border: "1.5px solid #E5E7EB",
-          textAlign: "center", padding: "64px 24px", color: "#9CA3AF", fontSize: 14,
+          background: "#fff", borderRadius: 16, border: "1.5px dashed #E5E7EB",
+          textAlign: "center", padding: "64px 24px",
         }}>
-          Товары не найдены. Добавьте товар вручную или синхронизируйте остатки.
+          <div style={{ width: 64, height: 64, borderRadius: 18, background: "linear-gradient(135deg, #FFF7ED, #FED7AA)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px" }}>
+            <Package size={28} color="#F97316" />
+          </div>
+          <p style={{ fontSize: 15, fontWeight: 700, color: "#111827", margin: 0 }}>Товары не найдены</p>
+          <p style={{ fontSize: 13, color: "#9CA3AF", marginTop: 6 }}>Добавьте товар вручную или синхронизируйте остатки</p>
         </div>
       ) : (
         <>
@@ -1308,9 +1323,9 @@ function ProductsTab({
           ) : (
             <div style={{ background: "#fff", borderRadius: 16, border: "1.5px solid #E5E7EB", overflow: "hidden", boxShadow: "0 1px 6px rgba(0,0,0,0.06)" }}>
               {/* Table header */}
-              <div style={{ display: "grid", gridTemplateColumns: "40px 1fr 96px 88px 76px 52px", background: "#F9FAFB", borderBottom: "1.5px solid #E5E7EB", padding: "0 8px" }}>
-                {["", "Книга", "Цена B2C", "Остаток", "Активен", ""].map((h, i) => (
-                  <div key={i} style={{ padding: "11px 10px", fontSize: 11, fontWeight: 700, color: "#9CA3AF", textTransform: "uppercase", letterSpacing: "0.06em", textAlign: i >= 2 && i < 5 ? "center" : "left" }}>{h}</div>
+              <div style={{ display: "grid", gridTemplateColumns: "40px 1fr 96px 88px 64px 64px 52px", background: "#F9FAFB", borderBottom: "1.5px solid #E5E7EB", padding: "0 8px" }}>
+                {["", "Книга", "Цена B2C", "Остаток", "Каталог", "B2B", ""].map((h, i) => (
+                  <div key={i} style={{ padding: "11px 10px", fontSize: 11, fontWeight: 700, color: "#9CA3AF", textTransform: "uppercase", letterSpacing: "0.06em", textAlign: i >= 2 && i < 6 ? "center" : "left" }}>{h}</div>
                 ))}
               </div>
 
@@ -1324,7 +1339,7 @@ function ProductsTab({
                 return (
                   <div key={book.id} style={{ borderBottom: "1px solid #F3F4F6" }}>
                     {/* ── Compact row ── */}
-                    <div style={{ display: "grid", gridTemplateColumns: "40px 1fr 96px 88px 76px 52px", alignItems: "center", padding: "3px 8px", background: isOpen ? "#FFF7ED" : !book.is_active ? "#FAFAFA" : undefined, transition: "background 0.15s" }}>
+                    <div className={isOpen ? "" : "admin-book-row"} style={{ display: "grid", gridTemplateColumns: "40px 1fr 96px 88px 64px 64px 52px", alignItems: "center", padding: "3px 8px", background: isOpen ? "#FFF7ED" : !book.is_active ? "#FAFAFA" : undefined, transition: "background 0.15s" }}>
                       <button
                         onClick={() => setExpanded(isOpen ? null : book.id)}
                         style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 30, height: 30, border: "none", background: "none", cursor: "pointer", color: isOpen ? "#F97316" : "#CBD5E1", borderRadius: 6 }}
@@ -1354,6 +1369,10 @@ function ProductsTab({
 
                       <div style={{ display: "flex", justifyContent: "center" }}>
                         <SmallToggle value={book.is_active} onChange={() => handleToggleActive(book)} />
+                      </div>
+
+                      <div style={{ display: "flex", justifyContent: "center" }}>
+                        <SmallToggle value={!!book.is_b2b_active} onChange={() => handleToggleB2bActive(book)} />
                       </div>
 
                       <div style={{ display: "flex", justifyContent: "center", padding: "4px 6px" }}>
@@ -1411,6 +1430,27 @@ function ProductsTab({
                                 </div>
                               </div>
                               <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 6 }}>Нажмите Enter или кликните вне поля — сохранится автоматически</p>
+                            </div>
+
+                            {/* Visibility toggles */}
+                            <div>
+                              <div style={{ fontSize: 11, fontWeight: 700, color: "#6B7280", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10 }}>Видимость</div>
+                              <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
+                                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                                  <Toggle value={book.is_active} onChange={() => handleToggleActive(book)} />
+                                  <div>
+                                    <div style={{ fontSize: 13, fontWeight: 600, color: "#374151" }}>Публичный каталог</div>
+                                    <div style={{ fontSize: 11, color: "#9CA3AF" }}>С ценами, доступен всем</div>
+                                  </div>
+                                </div>
+                                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                                  <Toggle value={!!book.is_b2b_active} onChange={() => handleToggleB2bActive(book)} />
+                                  <div>
+                                    <div style={{ fontSize: 13, fontWeight: 600, color: "#374151" }}>Кабинет оптовика (B2B)</div>
+                                    <div style={{ fontSize: 11, color: "#9CA3AF" }}>Без цен, только заявка</div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
 
                             {/* Multi-language description */}
@@ -1530,16 +1570,25 @@ export default function AdminProductsTable({
   }, []);
 
   return (
-    <div style={{ padding: "24px 0" }}>
-      {/* Page title */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-        <Package size={20} color="#F97316" />
-        <h1 style={{ fontSize: 20, fontWeight: 700, color: "#001A33", margin: 0 }}>
-          Панель управления
-        </h1>
-        {mainTab === "products" && (
-          <span style={{ fontSize: 13, color: "#9CA3AF" }}>{books.length} позиций</span>
-        )}
+    <div style={{ padding: "28px 0" }}>
+      {/* Page header */}
+      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 20 }}>
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: "#FFF7ED", border: "1px solid #FED7AA", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Package size={18} color="#F97316" />
+            </div>
+            <h1 style={{ fontSize: 22, fontWeight: 800, color: "#001A33", margin: 0, letterSpacing: "-0.01em" }}>
+              Каталог товаров
+            </h1>
+            {mainTab === "products" && (
+              <span style={{ fontSize: 13, color: "#9CA3AF", background: "#F3F4F6", borderRadius: 20, padding: "2px 10px", fontWeight: 500 }}>{books.length} позиций</span>
+            )}
+          </div>
+          <p style={{ fontSize: 13, color: "#6B7280", margin: 0, paddingLeft: 46 }}>
+            Управление учебными пособиями, ценами и остатками
+          </p>
+        </div>
       </div>
 
       {/* Main tabs */}
@@ -1562,8 +1611,11 @@ export default function AdminProductsTable({
 
       <style>{`
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button { opacity: 0.35; }
+        .admin-book-row:hover { background: #FAFBFF !important; }
+        .admin-book-row:hover .admin-expand-btn { color: #94A3B8 !important; }
       `}</style>
     </div>
   );

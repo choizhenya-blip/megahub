@@ -1,5 +1,5 @@
 export const en = {
-  brand: { megaHub: "MegaHub", education: "Education" },
+  brand: { megaHub: "", education: "" },
   nav: {
     home: "Home",
     catalog: "Catalog",
@@ -14,7 +14,7 @@ export const en = {
     pathCard2Title: "I represent an organization",
     pathCard2Sub: "Wholesale supply for schools, shops and institutions. Individual terms and support.",
     pathCard2Cta: "Submit a request",
-    statsTitle: "MegaHub by the numbers",
+    statsTitle: "Our numbers",
     statsItems: [
       { value: "100+", label: "Partners across Kazakhstan" },
       { value: "5,000+", label: "Textbook titles" },
@@ -172,7 +172,7 @@ export const en = {
       error: "Error while sending. Please try again.",
     },
   },
-  footer: { copyright: "© 2024 MegaHub Education. Almaty, Kazakhstan." },
+  footer: { copyright: "© 2024 Almaty, Kazakhstan." },
   errors: {
     supabaseTitle: "Supabase is unavailable (CORS)",
     supabaseSubtitle: "Showing demo data. In a real browser, data will load from the database.",
@@ -190,7 +190,7 @@ export const en = {
   },
   language: { label: "Language", ru: "RU", kz: "KZ", en: "EN" },
   forAuthors: {
-    heroTitle: "Become a MegaHub Education author",
+    heroTitle: "Become an author",
     heroSubtitle: "Publish educational materials, earn fair monetization, and reach thousands of schools across Kazakhstan.",
     heroCta: "Apply now",
     perksTitle: "Why authors choose us",
